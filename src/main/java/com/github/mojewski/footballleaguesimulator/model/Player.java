@@ -12,15 +12,14 @@ public class Player {
     private int age;
     private boolean isForSale;
 
-    public Player(String firstName, String lastName, int potential,
-                  int rating, Country country, Position position, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.potential = potential;
-        this.rating = rating;
-        this.country = country;
-        this.position = position;
-        this.age = age;
+    public Player(PlayerBuilder playerBuilder) {
+        this.firstName = playerBuilder.getFirstName();
+        this.lastName = playerBuilder.getLastName();
+        this.potential = playerBuilder.getPotential();
+        this.rating = playerBuilder.getRating();
+        this.country = playerBuilder.getCountry();
+        this.position = playerBuilder.getPosition();
+        this.age = playerBuilder.getAge();
     }
 
     public Long getId() { return id; }
