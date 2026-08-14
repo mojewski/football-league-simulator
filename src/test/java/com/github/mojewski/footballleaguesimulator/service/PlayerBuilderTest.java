@@ -1,9 +1,6 @@
 package com.github.mojewski.footballleaguesimulator.service;
 
-import com.github.mojewski.footballleaguesimulator.model.Country;
-import com.github.mojewski.footballleaguesimulator.model.Player;
-import com.github.mojewski.footballleaguesimulator.model.PlayerBuilder;
-import com.github.mojewski.footballleaguesimulator.model.Position;
+import com.github.mojewski.footballleaguesimulator.model.*;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +17,7 @@ public class PlayerBuilderTest {
         int expectedRating = 89;
         Country expectedCountry = Country.POLAND;
         Position expectedPosition = Position.FORWARD;
+        Team expectedTeam = new Team("FC Barcelona", 1000000000, 10);
         int expectedAge = 38;
 
         // WHEN
@@ -30,7 +28,9 @@ public class PlayerBuilderTest {
                 .setRating(expectedRating)
                 .setCountry(expectedCountry)
                 .setPosition(expectedPosition)
+                .setTeam(expectedTeam)
                 .setAge(expectedAge)
+                .setIsRetired(false)
                 .getResult();
 
         // THEN
@@ -41,6 +41,8 @@ public class PlayerBuilderTest {
         assertEquals(expectedRating, player.getRating());
         assertEquals(expectedCountry, player.getCountry());
         assertEquals(expectedPosition, player.getPosition());
+        assertEquals(expectedTeam, player.getTeam());
         assertEquals(expectedAge, player.getAge());
+        assertFalse(player.getIsRetired());
     }
 }

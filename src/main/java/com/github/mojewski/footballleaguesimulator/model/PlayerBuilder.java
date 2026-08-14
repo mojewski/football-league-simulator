@@ -9,6 +9,8 @@ public class PlayerBuilder {
     private Country country;
     private Position position;
     private int age;
+    private boolean isRetired;
+    private Team team;
 
     public PlayerBuilder setFirstName(String firstName) { this.firstName = firstName; return this; }
     public PlayerBuilder setLastName(String lastName) { this.lastName = lastName; return this; }
@@ -17,6 +19,8 @@ public class PlayerBuilder {
     public PlayerBuilder setCountry(Country country) { this.country = country; return this; }
     public PlayerBuilder setPosition(Position position) { this.position = position; return this; }
     public PlayerBuilder setAge(int age) { this.age = age; return this; }
+    public PlayerBuilder setIsRetired(boolean isRetired) { this.isRetired = false; return this; }
+    public PlayerBuilder setTeam(Team team) { this.team = team; return this; }
 
     public Player getResult() { return new Player(this); }
 
@@ -27,4 +31,6 @@ public class PlayerBuilder {
     public Country getCountry() { return country; }
     public Position getPosition() { return position; }
     public int getAge() { return age; }
+    public boolean getIsRetired() { return isRetired; }
+    public Team getTeam() { return team; }
 }
