@@ -15,6 +15,7 @@ public class Player {
     private boolean isForSale;
     private boolean isRetired;
     private Team team;
+    //TODO: injuryChance
 
     public Player(PlayerBuilder playerBuilder) {
         this.firstName = playerBuilder.getFirstName();

@@ -3,9 +3,16 @@ package com.github.mojewski.footballleaguesimulator.service;
 import com.github.mojewski.footballleaguesimulator.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 public class PlayerGeneratorTest {
+
+    @Mock
+    private NameGenerator nameGenerator;
 
     private PlayerGenerator playerGenerator;
     private Team team;
@@ -13,7 +20,7 @@ public class PlayerGeneratorTest {
 
     @BeforeEach
     void setUp() {
-        playerGenerator = new PlayerGenerator();
+        playerGenerator = new PlayerGenerator(nameGenerator);
         team = new Team("FC Barcelona", 1000000000, 10);
         retiringPlayer = new PlayerBuilder()
                 .setFirstName("Robert")
