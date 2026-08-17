@@ -1,6 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.service;
-
-import com.github.mojewski.footballleaguesimulator.model.*;
+package com.github.mojewski.footballleaguesimulator.model;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
