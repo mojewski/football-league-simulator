@@ -6,6 +6,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerGenerator {
 
+    private final NameGenerator nameGenerator;
+
+    public PlayerGenerator(NameGenerator nameGenerator) {
+        this.nameGenerator = nameGenerator;
+    }
+    
     public Player generateReplacement(Player retiringPlayer) {
 
         Team team = retiringPlayer.getTeam();
@@ -13,6 +19,8 @@ public class PlayerGenerator {
 
         int age = ThreadLocalRandom.current().nextInt(16,21);
         Country country = retiringPlayer.getCountry();
+        String firstName = nameGenerator.generateFirstName(country);
+        String lastName = nameGenerator.generateLastName(country);
         Position position = retiringPlayer.getPosition();
         int rawPotential = academyLevel + ThreadLocalRandom.current().nextInt(-10, 16);
         int potential = Math.min(99, Math.max(30, rawPotential));
