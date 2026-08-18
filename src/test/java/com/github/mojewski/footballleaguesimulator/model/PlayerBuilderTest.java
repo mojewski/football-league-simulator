@@ -13,6 +13,7 @@ public class PlayerBuilderTest {
         String expectedLastName = "Lewandowski";
         int expectedPotential = 90;
         int expectedRating = 89;
+        int expectedInjuryChance = 50;
         Country expectedCountry = Country.POLAND;
         Position expectedPosition = Position.FORWARD;
         Team expectedTeam = new Team("FC Barcelona", 1000000000, 10);
@@ -24,6 +25,7 @@ public class PlayerBuilderTest {
                 .setLastName(expectedLastName)
                 .setPotential(expectedPotential)
                 .setRating(expectedRating)
+                .setInjuryChance(expectedInjuryChance)
                 .setCountry(expectedCountry)
                 .setPosition(expectedPosition)
                 .setTeam(expectedTeam)
@@ -37,6 +39,7 @@ public class PlayerBuilderTest {
         assertEquals(expectedLastName, player.getLastName());
         assertEquals(expectedPotential, player.getPotential());
         assertEquals(expectedRating, player.getRating());
+        assertEquals(expectedInjuryChance, player.getInjuryChance());
         assertEquals(expectedCountry, player.getCountry());
         assertEquals(expectedPosition, player.getPosition());
         assertEquals(expectedTeam, player.getTeam());

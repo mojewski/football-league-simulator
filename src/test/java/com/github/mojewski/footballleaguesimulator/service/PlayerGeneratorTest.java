@@ -27,6 +27,7 @@ public class PlayerGeneratorTest {
                 .setLastName("Lewandowski")
                 .setPotential(90)
                 .setRating(89)
+                .setInjuryChance(50)
                 .setCountry(Country.POLAND)
                 .setPosition(Position.FORWARD)
                 .setTeam(team)
@@ -46,6 +47,7 @@ public class PlayerGeneratorTest {
         assertFalse(newPlayer.getIsRetired());
         assertTrue(newPlayer.getAge() >= 16 && newPlayer.getAge() <= 20);
         assertTrue(newPlayer.getPotential() >= 30 && newPlayer.getPotential() <= 99);
+        assertTrue(newPlayer.getInjuryChance() >= 5 && newPlayer.getInjuryChance() <= 80);
         assertTrue(newPlayer.getRating() < newPlayer.getPotential());
         assertTrue(newPlayer.getRating() >= (int) (newPlayer.getPotential() * 0.6));
     }
