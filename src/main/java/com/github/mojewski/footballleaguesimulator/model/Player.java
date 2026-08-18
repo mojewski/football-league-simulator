@@ -15,13 +15,14 @@ public class Player {
     private boolean isForSale;
     private boolean isRetired;
     private Team team;
-    //TODO: injuryChance
+    private int injuryChance;
 
     public Player(PlayerBuilder playerBuilder) {
         this.firstName = playerBuilder.getFirstName();
         this.lastName = playerBuilder.getLastName();
         this.potential = playerBuilder.getPotential();
         this.rating = playerBuilder.getRating();
+        this.injuryChance = playerBuilder.getInjuryChance();
         this.country = playerBuilder.getCountry();
         this.position = playerBuilder.getPosition();
         this.age = playerBuilder.getAge();
@@ -54,6 +55,7 @@ public class Player {
     public String getLastName() { return lastName; }
     public int getPotential() { return potential; }
     public int getRating() { return rating; }
+    public int getInjuryChance() { return injuryChance; }
     public Country getCountry() { return country; }
     public Position getPosition() { return position; }
     public int getAge() { return age; }

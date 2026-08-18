@@ -25,15 +25,17 @@ public class PlayerGenerator {
         int rawPotential = academyLevel + ThreadLocalRandom.current().nextInt(-10, 16);
         int potential = Math.min(99, Math.max(30, rawPotential));
         int rating = (int) (potential * ThreadLocalRandom.current().nextDouble(0.6, 0.76));
+        int injuryChance = ThreadLocalRandom.current().nextInt(5, 60);
 
         return new PlayerBuilder()
-                .setFirstName("New")  //TODO: NameGenerator!
-                .setLastName("Player")
+                .setFirstName(nameGenerator.generateFirstName(country))
+                .setLastName(nameGenerator.generateLastName(country))
                 .setAge(age)
                 .setCountry(country)
                 .setPosition(position)
                 .setPotential(potential)
                 .setRating(rating)
+                .setInjuryChance(injuryChance)
                 .setTeam(team)
                 .setIsRetired(false)
                 .getResult();
