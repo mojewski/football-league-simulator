@@ -37,6 +37,10 @@ public class NameGenerator {
         return list.get(index);
     }
 
+    public List<String> getFirstNames(Country country) { return firstNames.get(country); }
+    public List<String> getLastNames(Country country) { return lastNames.get(country); }
+
+
     private void initFirstNames() {
         // POLAND
         firstNames.put(Country.POLAND, List.of(
