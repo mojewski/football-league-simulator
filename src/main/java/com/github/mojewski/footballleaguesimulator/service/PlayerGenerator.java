@@ -1,6 +1,7 @@
 package com.github.mojewski.footballleaguesimulator.service;
 
 import com.github.mojewski.footballleaguesimulator.model.*;
+import com.github.mojewski.footballleaguesimulator.model.state.AvailableState;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -28,8 +29,8 @@ public class PlayerGenerator {
         int injuryChance = ThreadLocalRandom.current().nextInt(5, 60);
 
         return new PlayerBuilder()
-                .setFirstName(nameGenerator.generateFirstName(country))
-                .setLastName(nameGenerator.generateLastName(country))
+                .setFirstName(firstName)
+                .setLastName(lastName)
                 .setAge(age)
                 .setCountry(country)
                 .setPosition(position)
@@ -38,6 +39,7 @@ public class PlayerGenerator {
                 .setInjuryChance(injuryChance)
                 .setTeam(team)
                 .setIsRetired(false)
+                .setCurrentState(new AvailableState())
                 .getResult();
     }
 }
