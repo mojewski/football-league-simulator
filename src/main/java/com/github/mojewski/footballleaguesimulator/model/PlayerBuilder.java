@@ -1,5 +1,7 @@
 package com.github.mojewski.footballleaguesimulator.model;
 
+import com.github.mojewski.footballleaguesimulator.model.state.PlayerState;
+
 public class PlayerBuilder {
 
     private String firstName;
@@ -13,6 +15,8 @@ public class PlayerBuilder {
     private boolean isRetired;
     private Team team;
 
+    private PlayerState currentState;
+
     public PlayerBuilder setFirstName(String firstName) { this.firstName = firstName; return this; }
     public PlayerBuilder setLastName(String lastName) { this.lastName = lastName; return this; }
     public PlayerBuilder setPotential(int potential) { this.potential = potential; return this; }
@@ -21,8 +25,9 @@ public class PlayerBuilder {
     public PlayerBuilder setCountry(Country country) { this.country = country; return this; }
     public PlayerBuilder setPosition(Position position) { this.position = position; return this; }
     public PlayerBuilder setAge(int age) { this.age = age; return this; }
-    public PlayerBuilder setIsRetired(boolean isRetired) { this.isRetired = false; return this; }
+    public PlayerBuilder setIsRetired(boolean isRetired) { this.isRetired = isRetired; return this; }
     public PlayerBuilder setTeam(Team team) { this.team = team; return this; }
+    public PlayerBuilder setCurrentState(PlayerState currentState) { this.currentState = currentState; return this;}
 
     public Player getResult() { return new Player(this); }
 
@@ -36,4 +41,5 @@ public class PlayerBuilder {
     public int getAge() { return age; }
     public boolean getIsRetired() { return isRetired; }
     public Team getTeam() { return team; }
+    public PlayerState getCurrentState() { return currentState; }
 }

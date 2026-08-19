@@ -1,5 +1,7 @@
 package com.github.mojewski.footballleaguesimulator.model;
 
+import com.github.mojewski.footballleaguesimulator.model.state.PlayerState;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Player {
@@ -17,6 +19,8 @@ public class Player {
     private Team team;
     private int injuryChance;
 
+    private PlayerState currentState;
+
     public Player(PlayerBuilder playerBuilder) {
         this.firstName = playerBuilder.getFirstName();
         this.lastName = playerBuilder.getLastName();
@@ -28,6 +32,7 @@ public class Player {
         this.age = playerBuilder.getAge();
         this.isRetired = playerBuilder.getIsRetired();
         this.team = playerBuilder.getTeam();
+        this.currentState = playerBuilder.getCurrentState();
     }
 
     private int getRetiredProbability() {
@@ -36,6 +41,14 @@ public class Player {
         else if (this.age <= 38) return 50;
         else if (this.age <= 40) return 70;
         else return 100;
+    }
+
+    public void decreaseRating(int dropAmount) {
+        rating -= dropAmount;
+    }
+
+    public void setState(PlayerState state) {
+        currentState = state;
     }
 
     public boolean decideRetirement() {
@@ -62,4 +75,5 @@ public class Player {
     public boolean isForSale() { return isForSale; }
     public boolean getIsRetired() { return isRetired; }
     public Team getTeam() { return team; }
+    public PlayerState getCurrentState() { return currentState; }
 }
