@@ -1,6 +1,6 @@
-package com.github.mojewski.footballleaguesimulator.model.state;
+package com.github.mojewski.footballleaguesimulator.model.player.player_state;
 
-import com.github.mojewski.footballleaguesimulator.model.Player;
+import com.github.mojewski.footballleaguesimulator.model.player.Player;
 
 public class SuspendedState implements PlayerState {
 

@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model;
+package com.github.mojewski.footballleaguesimulator.model.player;
 
 import java.util.concurrent.ThreadLocalRandom;
 

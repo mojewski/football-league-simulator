@@ -1,4 +1,7 @@
-package com.github.mojewski.footballleaguesimulator.model;
+package com.github.mojewski.footballleaguesimulator.model.league;
+
+import com.github.mojewski.footballleaguesimulator.model.Country;
+import com.github.mojewski.footballleaguesimulator.model.team.Team;
 
 import java.util.ArrayList;
 import java.util.List;

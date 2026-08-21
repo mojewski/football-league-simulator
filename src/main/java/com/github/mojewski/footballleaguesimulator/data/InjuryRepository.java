@@ -1,6 +1,6 @@
 package com.github.mojewski.footballleaguesimulator.data;
 
-import com.github.mojewski.footballleaguesimulator.model.Injury;
+import com.github.mojewski.footballleaguesimulator.model.player.Injury;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
