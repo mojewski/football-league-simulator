@@ -1,7 +1,7 @@
-package com.github.mojewski.footballleaguesimulator.model.state;
+package com.github.mojewski.footballleaguesimulator.model.player.player_state;
 
-import com.github.mojewski.footballleaguesimulator.model.Injury;
-import com.github.mojewski.footballleaguesimulator.model.Player;
+import com.github.mojewski.footballleaguesimulator.model.player.Injury;
+import com.github.mojewski.footballleaguesimulator.model.player.Player;
 
 public class InjuryState implements PlayerState {
 
@@ -24,7 +24,7 @@ public class InjuryState implements PlayerState {
     public void passDay(Player player) {
         daysRemaining--;
 
-        if(initialDays >= 60 && !penaltyApplied){
+        if (initialDays >= 60 && !penaltyApplied) {
             applySkillDrop(player);
             penaltyApplied = true;
         }
@@ -44,7 +44,9 @@ public class InjuryState implements PlayerState {
 
     private void applySkillDrop(Player player) {
         dropAmount = (initialDays / 60) * 2;
-        player.decreaseRating(dropAmount);
+        if (player.getAttributes() != null) {
+            player.getAttributes().decreaseSkills(dropAmount);
+        }
     }
 
     public int getDaysRemaining() { return daysRemaining; }

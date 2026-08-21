@@ -1,30 +1,32 @@
 package com.github.mojewski.footballleaguesimulator.model;
 
+import com.github.mojewski.footballleaguesimulator.model.player.Player;
+import com.github.mojewski.footballleaguesimulator.model.player.PlayerAttributes;
+import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
+import com.github.mojewski.footballleaguesimulator.model.player.Position;
+import com.github.mojewski.footballleaguesimulator.model.team.Team;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerBuilderTest {
 
     @Test
-    void shouldBuildPlayerCorrect() {
+    void shouldBuildPlayerCorrectly() {
 
-        // GIVEN
         String expectedFirstName = "Robert";
         String expectedLastName = "Lewandowski";
-        int expectedPotential = 90;
-        int expectedRating = 89;
+        PlayerAttributes expectedAttributes = new PlayerAttributes(90, 40, 75, 92);
         int expectedInjuryChance = 50;
         Country expectedCountry = Country.POLAND;
         Position expectedPosition = Position.FORWARD;
         Team expectedTeam = new Team("FC Barcelona", 1000000000, 10);
         int expectedAge = 38;
 
-        // WHEN
         Player player = new PlayerBuilder()
                 .setFirstName(expectedFirstName)
                 .setLastName(expectedLastName)
-                .setPotential(expectedPotential)
-                .setRating(expectedRating)
+                .setAttributes(expectedAttributes)
                 .setInjuryChance(expectedInjuryChance)
                 .setCountry(expectedCountry)
                 .setPosition(expectedPosition)
@@ -33,17 +35,16 @@ public class PlayerBuilderTest {
                 .setIsRetired(false)
                 .getResult();
 
-        // THEN
         assertNotNull(player, "Player should not be NULL");
         assertEquals(expectedFirstName, player.getFirstName());
         assertEquals(expectedLastName, player.getLastName());
-        assertEquals(expectedPotential, player.getPotential());
-        assertEquals(expectedRating, player.getRating());
+        assertEquals(expectedAttributes, player.getAttributes());
         assertEquals(expectedInjuryChance, player.getInjuryChance());
         assertEquals(expectedCountry, player.getCountry());
         assertEquals(expectedPosition, player.getPosition());
         assertEquals(expectedTeam, player.getTeam());
         assertEquals(expectedAge, player.getAge());
         assertFalse(player.getIsRetired());
+        assertTrue(player.getOverallRating() > 0);
     }
 }

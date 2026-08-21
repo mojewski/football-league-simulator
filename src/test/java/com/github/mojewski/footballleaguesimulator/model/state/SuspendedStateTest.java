@@ -1,7 +1,10 @@
 package com.github.mojewski.footballleaguesimulator.model.state;
 
-import com.github.mojewski.footballleaguesimulator.model.Player;
-import com.github.mojewski.footballleaguesimulator.model.PlayerBuilder;
+import com.github.mojewski.footballleaguesimulator.model.player.Player;
+import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
+import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
+import com.github.mojewski.footballleaguesimulator.model.player.player_state.PlayerState;
+import com.github.mojewski.footballleaguesimulator.model.player.player_state.SuspendedState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

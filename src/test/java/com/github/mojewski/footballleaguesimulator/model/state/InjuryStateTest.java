@@ -1,6 +1,13 @@
 package com.github.mojewski.footballleaguesimulator.model.state;
 
-import com.github.mojewski.footballleaguesimulator.model.*;
+import com.github.mojewski.footballleaguesimulator.model.player.Injury;
+import com.github.mojewski.footballleaguesimulator.model.player.Player;
+import com.github.mojewski.footballleaguesimulator.model.player.PlayerAttributes;
+import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
+import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
+import com.github.mojewski.footballleaguesimulator.model.player.player_state.InjuryState;
+import com.github.mojewski.footballleaguesimulator.model.player.player_state.PlayerState;
+import com.github.mojewski.footballleaguesimulator.model.player.player_state.UnfitState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +24,7 @@ public class InjuryStateTest {
         player = new PlayerBuilder()
                 .setFirstName("Robert")
                 .setLastName("Lewandowski")
-                .setPotential(90)
-                .setRating(89)
+                .setAttributes(new PlayerAttributes(90, 85, 88, 92)) // Zastąpiono setRating
                 .setIsRetired(false)
                 .getResult();
     }
@@ -35,10 +41,12 @@ public class InjuryStateTest {
         InjuryState injuryState = new InjuryState(injury);
         player.setState(injuryState);
 
+        int initialOverall = player.getOverallRating();
+
         injuryState.passDay(player);
 
         assertEquals(6, injuryState.getDropAmount());
-        assertEquals(83, player.getRating());
+        assertTrue(player.getOverallRating() < initialOverall);
         assertTrue(injuryState.isPenaltyApplied());
     }
 
@@ -50,7 +58,7 @@ public class InjuryStateTest {
         injuryState.passDay(player);
         assertEquals(179, injuryState.getDaysRemaining());
 
-        while(injuryState.getDaysRemaining() > 0) {
+        while (injuryState.getDaysRemaining() > 0) {
             injuryState.passDay(player);
         }
 
@@ -78,7 +86,7 @@ public class InjuryStateTest {
         InjuryState injuryState = new InjuryState(shortInjury);
         player.setState(injuryState);
 
-        while(injuryState.getDaysRemaining() > 0) {
+        while (injuryState.getDaysRemaining() > 0) {
             injuryState.passDay(player);
         }
 
@@ -91,10 +99,12 @@ public class InjuryStateTest {
         InjuryState injuryState = new InjuryState(shortInjury);
         player.setState(injuryState);
 
+        int initialOverall = player.getOverallRating();
+
         injuryState.passDay(player);
 
         assertEquals(0, injuryState.getDropAmount());
-        assertEquals(89, player.getRating());
+        assertEquals(initialOverall, player.getOverallRating());
         assertFalse(injuryState.isPenaltyApplied());
     }
 }
