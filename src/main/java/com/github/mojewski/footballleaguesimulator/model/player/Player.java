@@ -26,6 +26,9 @@ public class Player {
     private int injuryChance;
     private PlayerState currentState;
 
+    private int stamina;
+    private PlayerContract contract;
+
     public Player(PlayerBuilder builder) {
         this.firstName = builder.getFirstName();
         this.lastName = builder.getLastName();
@@ -38,6 +41,8 @@ public class Player {
         this.currentState = builder.getCurrentState();
         this.attributes = builder.getAttributes();
         this.stats = builder.getStats();
+        this.stamina = builder.getStamina();
+        this.contract = builder.getContract();
     }
 
     public int getOverallRating() {
@@ -64,6 +69,20 @@ public class Player {
         else return 100;
     }
 
+    public boolean hasActiveContract() {
+        return contract != null && !contract.isExpired();
+    }
+
+    public void signContract(PlayerContract newContract, Team newTeam) {
+        this.contract = newContract;
+        this.team = newTeam;
+    }
+
+    public void terminateContract() {
+        this.contract = null;
+        this.team = null;
+    }
+
     public Long getId() { return id; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
@@ -77,4 +96,6 @@ public class Player {
     public PlayerState getCurrentState() { return currentState; }
     public PlayerAttributes getAttributes() { return attributes; }
     public PlayerStats getStats() { return stats; }
+    public int getStamina() { return stamina; }
+    public PlayerContract getContract() { return contract; }
 }

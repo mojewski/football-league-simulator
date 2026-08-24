@@ -1,10 +1,7 @@
 package com.github.mojewski.footballleaguesimulator.service;
 
 import com.github.mojewski.footballleaguesimulator.model.*;
-import com.github.mojewski.footballleaguesimulator.model.player.Player;
-import com.github.mojewski.footballleaguesimulator.model.player.PlayerAttributes;
-import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
-import com.github.mojewski.footballleaguesimulator.model.player.Position;
+import com.github.mojewski.footballleaguesimulator.model.player.*;
 import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 
@@ -34,6 +31,10 @@ public class PlayerGenerator {
         PlayerAttributes attributes = generateAttributesForPosition(position, potential);
         int injuryChance = ThreadLocalRandom.current().nextInt(5, 60);
 
+        int stamina = ThreadLocalRandom.current().nextInt(20, 100);
+
+        PlayerContract contract = generatePlayerContract(attributes, position);
+
         return new PlayerBuilder()
                 .setFirstName(firstName)
                 .setLastName(lastName)
@@ -45,40 +46,38 @@ public class PlayerGenerator {
                 .setTeam(team)
                 .setIsRetired(false)
                 .setCurrentState(new AvailableState())
+                .setStats(new PlayerStats())
+                .setStamina(stamina)
+                .setContract(contract)
                 .getResult();
     }
 
     private PlayerAttributes generateAttributesForPosition(Position position, int potential) {
         int baseSkill = (int) (potential * ThreadLocalRandom.current().nextDouble(0.6, 0.76));
 
-        int shooting = 0;
-        int passing = 0;
-        int defending = 0;
-
-        switch (position) {
-            case FORWARD -> {
-                shooting = boostSkill(baseSkill, 1.2);
-                passing = boostSkill(baseSkill, 0.9);
-                defending = boostSkill(baseSkill, 0.5);
-            }
-            case MIDFIELDER -> {
-                shooting = boostSkill(baseSkill, 0.9);
-                passing = boostSkill(baseSkill, 1.2);
-                defending = boostSkill(baseSkill, 0.9);
-            }
-            case DEFENDER -> {
-                shooting = boostSkill(baseSkill, 0.4);
-                passing = boostSkill(baseSkill, 0.8);
-                defending = boostSkill(baseSkill, 1.25);
-            }
-            case GOALKEEPER -> {
-                shooting = boostSkill(baseSkill, 0.2);
-                passing = boostSkill(baseSkill, 0.5);
-                defending = boostSkill(baseSkill, 1.3);
-            }
-        }
+        int shooting = boostSkill(baseSkill, position.getShootingBoost());
+        int passing = boostSkill(baseSkill, position.getPassingBoost());
+        int defending = boostSkill(baseSkill, position.getDefendingBoost());
 
         return new PlayerAttributes(shooting, defending, passing, potential);
+    }
+
+    private PlayerContract generatePlayerContract(PlayerAttributes attributes, Position position) {
+        int duration = ThreadLocalRandom.current().nextInt(1, 6);
+
+        int overall = attributes.calculateOverall(position);
+
+        double baseSalary = Math.pow(overall, 3.6) * 0.7;
+
+        int potentialBonus = Math.max(0, attributes.getPotential() - overall) * 500;
+
+        double variation = ThreadLocalRandom.current().nextDouble(0.90, 1.10);
+
+        int finalSalary = (int) Math.round((baseSalary + potentialBonus) * variation);
+
+        finalSalary = Math.max(500, finalSalary);
+
+        return new PlayerContract(duration, finalSalary);
     }
 
     private int boostSkill(int baseSkill, double multiplier) {

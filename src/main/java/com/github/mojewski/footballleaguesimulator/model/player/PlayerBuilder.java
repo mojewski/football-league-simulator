@@ -17,6 +17,8 @@ public class PlayerBuilder {
     private PlayerState currentState;
     private PlayerAttributes attributes;
     private PlayerStats stats = new PlayerStats();
+    private int stamina;
+    private PlayerContract contract;
 
     public PlayerBuilder setFirstName(String firstName) { this.firstName = firstName; return this; }
     public PlayerBuilder setLastName(String lastName) { this.lastName = lastName; return this; }
@@ -29,6 +31,8 @@ public class PlayerBuilder {
     public PlayerBuilder setCurrentState(PlayerState currentState) { this.currentState = currentState; return this;}
     public PlayerBuilder setAttributes(PlayerAttributes attributes) { this.attributes = attributes; return this; }
     public PlayerBuilder setStats(PlayerStats stats) { this.stats = stats; return this; }
+    public PlayerBuilder setStamina(int stamina) { this.stamina = stamina; return this; }
+    public PlayerBuilder setContract(PlayerContract contract) { this.contract = contract; return this; }
 
     public Player getResult() { return new Player(this); }
 
@@ -43,4 +47,6 @@ public class PlayerBuilder {
     public PlayerState getCurrentState() { return currentState; }
     public PlayerAttributes getAttributes() { return attributes; }
     public PlayerStats getStats() { return stats; }
+    public int getStamina() { return stamina; }
+    public PlayerContract getContract() { return contract; }
 }
