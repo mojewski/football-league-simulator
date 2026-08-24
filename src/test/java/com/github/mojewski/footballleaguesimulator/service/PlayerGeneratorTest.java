@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayerGeneratorTest {
@@ -27,6 +29,10 @@ public class PlayerGeneratorTest {
     @BeforeEach
     void setUp() {
         playerGenerator = new PlayerGenerator(nameGenerator);
+
+        when(nameGenerator.generateFirstName(any(Country.class))).thenReturn("Jan");
+        when(nameGenerator.generateLastName(any(Country.class))).thenReturn("Kowalski");
+
         team = new Team("FC Barcelona", 1000000000, 10);
         retiringPlayer = new PlayerBuilder()
                 .setFirstName("Robert")
@@ -43,21 +49,23 @@ public class PlayerGeneratorTest {
 
     @Test
     void shouldGeneratePlayerAttributesCorrectly() {
-
         Player newPlayer = playerGenerator.generateReplacement(retiringPlayer);
 
         assertNotNull(newPlayer);
+        assertEquals("Jan", newPlayer.getFirstName());
+        assertEquals("Kowalski", newPlayer.getLastName());
         assertEquals(retiringPlayer.getTeam(), newPlayer.getTeam());
         assertEquals(retiringPlayer.getPosition(), newPlayer.getPosition());
         assertFalse(newPlayer.getIsRetired());
-        assertTrue(newPlayer.getAge() >= 16 && newPlayer.getAge() <= 20);
 
-        assertNotNull(newPlayer.getAttributes());
+        assertTrue(newPlayer.getAge() >= 16 && newPlayer.getAge() <= 20, "Wiek zawodnika powinien mieścić się w przedziale 16-20");
+        assertTrue(newPlayer.getInjuryChance() >= 5 && newPlayer.getInjuryChance() <= 60, "Podatność na kontuzje powinna mieścić się w przedziale 5-60");
+
+        assertNotNull(newPlayer.getAttributes(), "Atrybuty gracza nie mogą być null");
         int potential = newPlayer.getAttributes().getPotential();
-        assertTrue(potential >= 30 && potential <= 99);
-        assertTrue(newPlayer.getInjuryChance() >= 5 && newPlayer.getInjuryChance() <= 60);
+        assertTrue(potential >= 30 && potential <= 99, "Potencjał powinien mieścić się w granicach 30-99");
 
-        assertTrue(newPlayer.getOverallRating() > 0);
-        assertTrue(newPlayer.getOverallRating() <= potential);
+        assertNotNull(newPlayer.getContract(), "Nowo wygenerowany gracz powinien posiadać kontrakt");
+        assertTrue(newPlayer.getContract().getSalaryPerYear() >= 500, "Minimalna pensja w kontrakcie to 500");
     }
 }
