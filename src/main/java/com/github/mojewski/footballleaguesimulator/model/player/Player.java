@@ -41,11 +41,7 @@ public class Player {
     }
 
     public int getOverallRating() {
-        return position.calculateOverall(
-                attributes.getShooting(),
-                attributes.getPassing(),
-                attributes.getDefending()
-        );
+        return attributes.calculateOverall(this.position);
     }
 
     public void setState(PlayerState state) {
