@@ -20,7 +20,7 @@ public class PlayerBuilderTest {
         int expectedInjuryChance = 50;
         Country expectedCountry = Country.POLAND;
         Position expectedPosition = Position.FORWARD;
-        Team expectedTeam = new Team("FC Barcelona", 1000000000, 10);
+        Team expectedTeam = new Team("FC Barcelona", 1000000000, 10, 99);
         int expectedAge = 38;
 
         Player player = new PlayerBuilder()

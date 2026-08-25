@@ -1,9 +1,6 @@
 package com.github.mojewski.footballleaguesimulator.model.state;
 
-import com.github.mojewski.footballleaguesimulator.model.player.Injury;
-import com.github.mojewski.footballleaguesimulator.model.player.Player;
-import com.github.mojewski.footballleaguesimulator.model.player.PlayerAttributes;
-import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
+import com.github.mojewski.footballleaguesimulator.model.player.*;
 import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
 import com.github.mojewski.footballleaguesimulator.model.player.player_state.InjuryState;
 import com.github.mojewski.footballleaguesimulator.model.player.player_state.PlayerState;
@@ -24,6 +21,7 @@ public class InjuryStateTest {
         player = new PlayerBuilder()
                 .setFirstName("Robert")
                 .setLastName("Lewandowski")
+                .setPosition(Position.FORWARD)
                 .setAttributes(new PlayerAttributes(90, 85, 88, 92)) // Zastąpiono setRating
                 .setIsRetired(false)
                 .getResult();

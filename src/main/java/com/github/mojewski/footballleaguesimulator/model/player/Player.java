@@ -17,6 +17,7 @@ public class Player {
     private Position position;
 
     private PlayerAttributes attributes;
+    private int overall;
     private PlayerStats stats;
 
     private boolean isForSale;
@@ -43,10 +44,19 @@ public class Player {
         this.stats = builder.getStats();
         this.stamina = builder.getStamina();
         this.contract = builder.getContract();
+        if (this.attributes != null && this.position != null) {
+            this.overall = this.attributes.calculateOverall(this.position);
+        }
     }
 
     public int getOverallRating() {
         return attributes.calculateOverall(this.position);
+    }
+
+    public void recalculateOverall() {
+        if (this.attributes != null && this.position != null) {
+            this.overall = this.attributes.calculateOverall(this.position);
+        }
     }
 
     public void setState(PlayerState state) {
@@ -98,4 +108,5 @@ public class Player {
     public PlayerStats getStats() { return stats; }
     public int getStamina() { return stamina; }
     public PlayerContract getContract() { return contract; }
+    public int getOverall() { return overall; }
 }
