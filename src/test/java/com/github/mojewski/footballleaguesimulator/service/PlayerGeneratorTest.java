@@ -33,7 +33,7 @@ public class PlayerGeneratorTest {
         when(nameGenerator.generateFirstName(any(Country.class))).thenReturn("Jan");
         when(nameGenerator.generateLastName(any(Country.class))).thenReturn("Kowalski");
 
-        team = new Team("FC Barcelona", 1000000000, 10);
+        team = new Team("FC Barcelona", 1000000000, 10, 99);
         retiringPlayer = new PlayerBuilder()
                 .setFirstName("Robert")
                 .setLastName("Lewandowski")
@@ -58,14 +58,14 @@ public class PlayerGeneratorTest {
         assertEquals(retiringPlayer.getPosition(), newPlayer.getPosition());
         assertFalse(newPlayer.getIsRetired());
 
-        assertTrue(newPlayer.getAge() >= 16 && newPlayer.getAge() <= 20, "Wiek zawodnika powinien mieścić się w przedziale 16-20");
-        assertTrue(newPlayer.getInjuryChance() >= 5 && newPlayer.getInjuryChance() <= 60, "Podatność na kontuzje powinna mieścić się w przedziale 5-60");
+        assertTrue(newPlayer.getAge() >= 16 && newPlayer.getAge() <= 20);
+        assertTrue(newPlayer.getInjuryChance() >= 5 && newPlayer.getInjuryChance() <= 60);
 
-        assertNotNull(newPlayer.getAttributes(), "Atrybuty gracza nie mogą być null");
+        assertNotNull(newPlayer.getAttributes());
         int potential = newPlayer.getAttributes().getPotential();
-        assertTrue(potential >= 30 && potential <= 99, "Potencjał powinien mieścić się w granicach 30-99");
+        assertTrue(potential >= 5 && potential <= 99);
 
-        assertNotNull(newPlayer.getContract(), "Nowo wygenerowany gracz powinien posiadać kontrakt");
-        assertTrue(newPlayer.getContract().getSalaryPerYear() >= 500, "Minimalna pensja w kontrakcie to 500");
+        assertNotNull(newPlayer.getContract());
+        assertTrue(newPlayer.getContract().getSalaryPerYear() >= 500);
     }
 }

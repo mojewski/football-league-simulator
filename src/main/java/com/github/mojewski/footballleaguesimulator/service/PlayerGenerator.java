@@ -25,8 +25,11 @@ public class PlayerGenerator {
         String lastName = nameGenerator.generateLastName(country);
         Position position = retiringPlayer.getPosition();
 
-        int rawPotential = academyLevel + ThreadLocalRandom.current().nextInt(-10, 16);
-        int potential = Math.min(99, Math.max(30, rawPotential));
+        int basePotential = 5 + (int) (academyLevel * 0.85);
+        int variation = ThreadLocalRandom.current().nextInt(-10, 11);
+        int rawPotential = basePotential + variation;
+
+        int potential = Math.min(99, Math.max(5, rawPotential));
 
         PlayerAttributes attributes = generateAttributesForPosition(position, potential);
         int injuryChance = ThreadLocalRandom.current().nextInt(5, 60);
@@ -77,7 +80,7 @@ public class PlayerGenerator {
 
         finalSalary = Math.max(500, finalSalary);
 
-        return new PlayerContract(duration, finalSalary);
+        return new PlayerContract(finalSalary, duration);
     }
 
     private int boostSkill(int baseSkill, double multiplier) {

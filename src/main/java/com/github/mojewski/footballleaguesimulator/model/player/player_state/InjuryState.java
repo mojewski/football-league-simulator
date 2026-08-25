@@ -26,6 +26,7 @@ public class InjuryState implements PlayerState {
 
         if (initialDays >= 60 && !penaltyApplied) {
             applySkillDrop(player);
+            player.recalculateOverall();
             penaltyApplied = true;
         }
 
