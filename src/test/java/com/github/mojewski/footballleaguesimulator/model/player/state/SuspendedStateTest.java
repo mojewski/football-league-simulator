@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model.state;
+package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
@@ -33,7 +33,7 @@ public class SuspendedStateTest {
         SuspendedState suspendedState = new SuspendedState(5);
         player.setState(suspendedState);
 
-        suspendedState.playMatch(player);
+        player.getCurrentState().playMatch(player);
         assertEquals(4, suspendedState.getMatchesOff());
     }
 
@@ -43,11 +43,12 @@ public class SuspendedStateTest {
         player.setState(suspendedState);
 
         while(suspendedState.getMatchesOff() > 0) {
-            suspendedState.playMatch(player);
+            player.getCurrentState().playMatch(player);
         }
 
-        suspendedState.passDay(player);
+        player.getCurrentState().passDay(player);
 
         assertInstanceOf(AvailableState.class, player.getCurrentState());
+        assertTrue(player.getCurrentState().canPlay());
     }
 }

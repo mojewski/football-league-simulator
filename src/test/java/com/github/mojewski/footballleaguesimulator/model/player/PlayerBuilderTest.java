@@ -1,9 +1,6 @@
-package com.github.mojewski.footballleaguesimulator.model;
+package com.github.mojewski.footballleaguesimulator.model.player;
 
-import com.github.mojewski.footballleaguesimulator.model.player.Player;
-import com.github.mojewski.footballleaguesimulator.model.player.PlayerAttributes;
-import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
-import com.github.mojewski.footballleaguesimulator.model.player.Position;
+import com.github.mojewski.footballleaguesimulator.model.Country;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +42,6 @@ public class PlayerBuilderTest {
         assertEquals(expectedTeam, player.getTeam());
         assertEquals(expectedAge, player.getAge());
         assertFalse(player.getIsRetired());
-        assertTrue(player.getOverallRating() > 0);
+        assertTrue(player.getOverall() > 0);
     }
 }

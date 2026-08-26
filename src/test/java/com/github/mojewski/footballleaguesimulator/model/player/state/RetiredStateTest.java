@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model.state;
+package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
@@ -33,8 +33,8 @@ public class RetiredStateTest {
         PlayerState retiredState = new RetiredState();
         player.setState(retiredState);
 
-        retiredState.passDay(player);
-        retiredState.playMatch(player);
+        player.getCurrentState().passDay(player);
+        player.getCurrentState().playMatch(player);
 
         assertInstanceOf(RetiredState.class, player.getCurrentState());
         assertFalse(player.getCurrentState().canPlay());

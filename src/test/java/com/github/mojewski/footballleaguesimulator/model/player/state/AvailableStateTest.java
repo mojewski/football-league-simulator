@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model.state;
+package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
@@ -33,8 +33,8 @@ public class AvailableStateTest {
         PlayerState availableState = new AvailableState();
         player.setState(availableState);
 
-        availableState.passDay(player);
-        availableState.playMatch(player);
+        player.getCurrentState().passDay(player);
+        player.getCurrentState().playMatch(player);
 
         assertInstanceOf(AvailableState.class, player.getCurrentState());
         assertTrue(player.getCurrentState().canPlay());
