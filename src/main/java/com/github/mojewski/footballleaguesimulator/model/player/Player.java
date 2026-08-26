@@ -49,11 +49,7 @@ public class Player {
         }
     }
 
-    public int getOverallRating() {
-        return attributes.calculateOverall(this.position);
-    }
-
-    public void recalculateOverall() {
+    public void calculateOverall() {
         if (this.attributes != null && this.position != null) {
             this.overall = this.attributes.calculateOverall(this.position);
         }

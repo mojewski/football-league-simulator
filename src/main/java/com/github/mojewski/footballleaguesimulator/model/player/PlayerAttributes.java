@@ -10,61 +10,73 @@ public class PlayerAttributes {
     private int potential;
 
     public PlayerAttributes(int shooting, int defending, int passing, int potential) {
-        this.shooting = shooting;
-        this.defending = defending;
-        this.passing = passing;
-        this.potential = potential;
+        this.shooting = Math.min(99, Math.max(1, shooting));
+        this.defending = Math.min(99, Math.max(1, defending));
+        this.passing = Math.min(99, Math.max(1, passing));
+        this.potential = Math.min(99, Math.max(1, potential));
     }
 
     public int calculateOverall(Position position) {
         return position.calculateOverall(this.shooting, this.passing, this.defending);
     }
 
-    public void decreaseSkills(int dropAmount) {
-        this.shooting = Math.max(1, this.shooting - dropAmount);
-        this.passing = Math.max(1, this.passing - dropAmount);
-        this.defending = Math.max(1, this.defending - dropAmount);
+    public void decreaseSkills(int dropAmount, Position position) {
+        if (dropAmount <= 0) return;
+
+        for (int i = 0; i < dropAmount; i++) {
+            if (this.shooting <= 1 && this.passing <= 1 && this.defending <= 1) {
+                break;
+            }
+
+            double totalWeight = this.shooting + this.passing + this.defending;
+            double draw = ThreadLocalRandom.current().nextDouble(0, totalWeight);
+
+            if (draw < this.shooting) {
+                if (this.shooting > 1) this.shooting--;
+            } else if (draw < this.shooting + this.passing) {
+                if (this.passing > 1) this.passing--;
+            } else {
+                if (this.defending > 1) this.defending--;
+            }
+        }
     }
 
     public void increaseSkills(int seasonForm, Position position) {
-        int overall = calculateOverall(position);
+
+        if (seasonForm < 6 || calculateOverall(position) >= potential) {
+            return;
+        }
+
+        int pointsToDistribute = calculatePointsFromForm(seasonForm);
 
         double shootingBoost = position.getShootingBoost();
         double passingBoost = position.getPassingBoost();
         double defendingBoost = position.getDefendingBoost();
+        double totalWeight = shootingBoost + passingBoost + defendingBoost;
 
-        if(overall < potential) {
-            int variation = 0;
-            if(seasonForm <= 7) {
-                variation = ThreadLocalRandom.current().nextInt(1, 3);
-            } else if (seasonForm <= 8) {
-                variation = ThreadLocalRandom.current().nextInt(4, 7);
-            } else if(seasonForm <= 9) {
-                variation = ThreadLocalRandom.current().nextInt(8, 11);
-            } else if(seasonForm <= 10) {
-                variation = ThreadLocalRandom.current().nextInt(12, 15);
+        for (int i = 0; i < pointsToDistribute; i++) {
+
+            if (calculateOverall(position) >= potential) {
+                break;
             }
 
-            int totalPointsToDistribute = (int) Math.round(variation * shootingBoost)
-                    + (int) Math.round(variation * passingBoost)
-                    + (int) Math.round(variation * defendingBoost);
+            double draw = ThreadLocalRandom.current().nextDouble(0, totalWeight);
 
-            for (int i = 0; i < totalPointsToDistribute; i++) {
-                if (calculateOverall(position) >= potential) {
-                    break;
-                }
-
-                double draw = ThreadLocalRandom.current().nextDouble(0, shootingBoost + passingBoost + defendingBoost);
-
-                if (draw < shootingBoost) {
-                    if (this.shooting < 99) this.shooting++;
-                } else if (draw < shootingBoost + passingBoost) {
-                    if (this.passing < 99) this.passing++;
-                } else {
-                    if (this.defending < 99) this.defending++;
-                }
+            if (draw < shootingBoost) {
+                if (this.shooting < 99) this.shooting++;
+            } else if (draw < shootingBoost + passingBoost) {
+                if (this.passing < 99) this.passing++;
+            } else {
+                if (this.defending < 99) this.defending++;
             }
         }
+    }
+
+    private int calculatePointsFromForm(int seasonForm) {
+        if (seasonForm <= 7) return ThreadLocalRandom.current().nextInt(1, 3);
+        if (seasonForm <= 8) return ThreadLocalRandom.current().nextInt(3, 6);
+        if (seasonForm <= 9) return ThreadLocalRandom.current().nextInt(6, 9);
+        else return ThreadLocalRandom.current().nextInt(9, 13);
     }
 
     public int getShooting() { return shooting; }

@@ -50,4 +50,7 @@ public enum Position {
         };
     }
 
+    public double getShootingWeight() { return shootingWeight; }
+    public double getPassingWeight() { return passingWeight; }
+    public double getDefendingWeight() { return defendingWeight; }
 }

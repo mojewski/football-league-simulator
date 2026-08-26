@@ -68,4 +68,20 @@ public class PlayerGeneratorTest {
         assertNotNull(newPlayer.getContract());
         assertTrue(newPlayer.getContract().getSalaryPerYear() >= 500);
     }
+
+    @Test
+    void shouldGenerateBetterPotentialForBetterAcademy() {
+        Team topAcademyTeam = new Team("Academy 99", 1_000_000, 99, 99);
+        Player topAcademyRetiringPlayer = new PlayerBuilder()
+                .setCountry(Country.POLAND)
+                .setPosition(Position.FORWARD)
+                .setTeam(topAcademyTeam)
+                .getResult();
+
+        Player playerFromTopAcademy = playerGenerator.generateReplacement(topAcademyRetiringPlayer);
+        Player playerFromWeakAcademy = playerGenerator.generateReplacement(retiringPlayer);
+
+        assertTrue(playerFromTopAcademy.getAttributes().getPotential() >
+                playerFromWeakAcademy.getAttributes().getPotential());
+    }
 }

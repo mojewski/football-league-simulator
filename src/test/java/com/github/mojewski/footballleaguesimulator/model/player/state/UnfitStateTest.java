@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model.state;
+package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
@@ -32,11 +32,12 @@ public class UnfitStateTest {
     @Test
     void shouldCalculateRecommendedMinutesCorrectly() {
         UnfitState unfitState = new UnfitState(10);
+        player.setState(unfitState);
 
         assertEquals(15, unfitState.getMaxRecommendedMinutes());
 
         for (int i = 0; i < 5; i++) {
-            unfitState.passDay(player);
+            player.getCurrentState().passDay(player);
         }
 
         assertEquals(52, unfitState.getMaxRecommendedMinutes());
@@ -47,11 +48,11 @@ public class UnfitStateTest {
         UnfitState unfitState = new UnfitState(2);
         player.setState(unfitState);
 
-        unfitState.passDay(player);
+        player.getCurrentState().passDay(player);
         assertEquals(1, unfitState.getDaysRemaining());
         assertInstanceOf(UnfitState.class, player.getCurrentState());
 
-        unfitState.passDay(player);
+        player.getCurrentState().passDay(player);
         assertEquals(0, unfitState.getDaysRemaining());
         assertInstanceOf(AvailableState.class, player.getCurrentState());
     }

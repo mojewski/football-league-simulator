@@ -31,7 +31,7 @@ public class NameGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateValidNamesForExistingCountry() {
+    void shouldGenerateValidNamesForExistingCountry() {
         String expectedFirstName = nameGenerator.generateFirstName(Country.POLAND);
         String expectedLastName = nameGenerator.generateLastName(Country.POLAND);
         List<String> firstNames = nameRepository.getFirstNamesForCountry(Country.POLAND);
@@ -42,7 +42,7 @@ public class NameGeneratorTest {
     }
 
     @Test
-    public void shouldGenerateDefaultNames() {
+    void shouldGenerateDefaultNames() {
         String expectedFirstName = nameGenerator.generateFirstName(null);
         String expectedLastName = nameGenerator.generateLastName(null);
 
