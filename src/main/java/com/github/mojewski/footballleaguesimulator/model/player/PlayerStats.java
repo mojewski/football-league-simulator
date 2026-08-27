@@ -49,4 +49,5 @@ public class PlayerStats {
     public int getCleanSheets() { return cleanSheets; }
     public int getYellowCards() { return yellowCards; }
     public int getRedCards() { return redCards; }
+    public double getAverageRating() { return averageRating; }
 }
