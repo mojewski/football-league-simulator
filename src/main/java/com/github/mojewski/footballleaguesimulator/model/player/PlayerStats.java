@@ -8,22 +8,40 @@ public class PlayerStats {
     private int cleanSheets;
     private int yellowCards;
     private int redCards;
+    private double averageRating;
+    private double totalRatingSum;
 
     public PlayerStats() {
+        reset();
+    }
+
+    public void addMatchesPlayed() { this.matchesPlayed++; }
+    public void addGoals(int count) { if (count > 0) this.goals += count; }
+    public void addAssists(int count) { if (count > 0) this.assists += count; }
+    public void addCleanSheet() { this.cleanSheets++; }
+    public void addYellowCard() { this.yellowCards++; }
+    public void addRedCard() { this.redCards++; }
+
+    public void calculateAverageRating(double matchRating) {
+        if (matchRating < 1.0 || matchRating > 10.0) {
+            return;
+        }
+        this.totalRatingSum += matchRating;
+
+        double rawAverage = this.totalRatingSum / this.matchesPlayed;
+        this.averageRating = Math.round(rawAverage * 100.0) / 100.0;
+    }
+
+    public void reset() {
         this.matchesPlayed = 0;
         this.goals = 0;
         this.assists = 0;
         this.cleanSheets = 0;
         this.yellowCards = 0;
         this.redCards = 0;
+        this.averageRating = 0.0;
+        this.totalRatingSum = 0.0;
     }
-
-    public void addMatchesPlayed() { this.matchesPlayed++; }
-    public void addGoal() { this.goals++; }
-    public void addAssist() { this.assists++; }
-    public void addCleanSheet() { this.cleanSheets++; }
-    public void addYellowCard() { this.yellowCards++; }
-    public void addRedCard() { this.redCards++; }
 
     public int getMatchesPlayed() { return matchesPlayed; }
     public int getGoals() { return goals; }

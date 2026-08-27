@@ -56,7 +56,7 @@ public class PlayerGeneratorTest {
         assertEquals("Kowalski", newPlayer.getLastName());
         assertEquals(retiringPlayer.getTeam(), newPlayer.getTeam());
         assertEquals(retiringPlayer.getPosition(), newPlayer.getPosition());
-        assertFalse(newPlayer.getIsRetired());
+        assertFalse(newPlayer.isRetired());
 
         assertTrue(newPlayer.getAge() >= 16 && newPlayer.getAge() <= 20, "Wiek zawodnika powinien mieścić się w przedziale 16-20");
         assertTrue(newPlayer.getInjuryChance() >= 5 && newPlayer.getInjuryChance() <= 60, "Podatność na kontuzje powinna mieścić się w przedziale 5-60");
