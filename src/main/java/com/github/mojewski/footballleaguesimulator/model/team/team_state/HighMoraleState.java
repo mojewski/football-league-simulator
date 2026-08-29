@@ -8,10 +8,15 @@ public class HighMoraleState implements TeamMoraleState {
     @Override
     public void onMatchEnd(Team team, MatchResult result) {
 
+        if(result == MatchResult.LOSS) {
+            team.setTeamState(new NeutralState(0, 1));
+        } else if(result == MatchResult.DRAW) {
+            team.setTeamState(new NeutralState());
+        }
     }
 
     @Override
-    public void getMoraleModifier() {
-
+    public double getMoraleModifier() {
+        return 1.25;
     }
 }

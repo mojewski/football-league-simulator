@@ -56,7 +56,7 @@ public class PlayerGeneratorTest {
         assertEquals("Kowalski", newPlayer.getLastName());
         assertEquals(retiringPlayer.getTeam(), newPlayer.getTeam());
         assertEquals(retiringPlayer.getPosition(), newPlayer.getPosition());
-        assertFalse(newPlayer.isRetired());
+        assertFalse(newPlayer.getIsRetired());
 
         assertTrue(newPlayer.getAge() >= 16 && newPlayer.getAge() <= 20);
         assertTrue(newPlayer.getInjuryChance() >= 5 && newPlayer.getInjuryChance() <= 60);

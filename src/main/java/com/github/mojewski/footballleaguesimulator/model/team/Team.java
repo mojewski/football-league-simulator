@@ -1,6 +1,9 @@
 package com.github.mojewski.footballleaguesimulator.model.team;
 
+import com.github.mojewski.footballleaguesimulator.model.match.MatchResult;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
+import com.github.mojewski.footballleaguesimulator.model.team.team_state.NeutralState;
+import com.github.mojewski.footballleaguesimulator.model.team.team_state.TeamMoraleState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +14,7 @@ public class Team {
     private double budget;
     private int academyRating;
     private int reputation;
+    private TeamMoraleState currentState;
 
     private TeamStats teamStats = new TeamStats();
     private List<Player> players = new ArrayList<>();
@@ -20,6 +24,20 @@ public class Team {
         this.budget = budget;
         this.academyRating = academyRating;
         this.reputation = reputation;
+        this.currentState = new NeutralState();
+    }
+
+    public void setTeamState(TeamMoraleState state) {
+        this.currentState = state;
+    }
+
+    public void updateMorale(MatchResult result) {
+        this.currentState.onMatchEnd(this, result);
+    }
+
+    public double calculateEffectiveTeamRating() {
+        double baseRating = calculateTeamRating();
+        return baseRating * currentState.getMoraleModifier();
     }
 
     public void addPlayer(Player player){
@@ -48,4 +66,5 @@ public class Team {
     public int getReputation() { return reputation; }
     public List<Player> getPlayerList() { return players; }
     public TeamStats getTeamStats() { return teamStats; }
+    public TeamMoraleState getCurrentState() { return currentState; }
 }
