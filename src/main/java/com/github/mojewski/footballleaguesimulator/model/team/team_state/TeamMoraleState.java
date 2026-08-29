@@ -7,5 +7,5 @@ public interface TeamMoraleState {
 
     void onMatchEnd(Team team, MatchResult result);
 
-    void getMoraleModifier();
+    double getMoraleModifier();
 }
