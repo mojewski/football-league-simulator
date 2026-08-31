@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Team {
+
+    private static final int STARTING_ELEVEN_SIZE = 11;
+
     private Long id;
     private String name;
     private double budget;
@@ -40,7 +43,7 @@ public class Team {
         return baseRating * currentState.getMoraleModifier();
     }
 
-    public void addPlayer(Player player){
+    public void addPlayer(Player player) {
         players.add(player);
     }
 
@@ -51,10 +54,45 @@ public class Team {
     public void addBudget(double amount) { this.budget += amount; }
     public void subtractBudget(double amount) { this.budget -= amount; }
 
-    public double calculateTeamRating() {
-
+    public List<Player> getStartingEleven() {
         return players.stream()
+                .sorted((p1, p2) -> Integer.compare(
+                        p2.getAttributes().calculateOverall(p2.getPosition()),
+                        p1.getAttributes().calculateOverall(p1.getPosition())
+                ))
+                .limit(STARTING_ELEVEN_SIZE)
+                .toList();
+    }
+
+    public double calculateTeamRating() {
+        return getStartingEleven().stream()
                 .mapToInt(p -> p.getAttributes().calculateOverall(p.getPosition()))
+                .average()
+                .orElse(0.0);
+    }
+
+    public double calculateTeamAttackRating() {
+        return getStartingEleven().stream()
+                .mapToInt(p -> (p.getAttributes().getShooting()
+                        + p.getAttributes().getDribbling()
+                        + p.getAttributes().getPace()) / 3)
+                .average()
+                .orElse(0.0);
+    }
+
+    public double calculateTeamMidfieldRating() {
+        return getStartingEleven().stream()
+                .mapToInt(p -> (p.getAttributes().getPassing()
+                        + p.getAttributes().getDribbling()) / 2)
+                .average()
+                .orElse(0.0);
+    }
+
+    public double calculateTeamDefenseRating() {
+        return getStartingEleven().stream()
+                .mapToInt(p -> (p.getAttributes().getDefending()
+                        + p.getAttributes().getPhysical()
+                        + p.getAttributes().getPace()) / 3)
                 .average()
                 .orElse(0.0);
     }

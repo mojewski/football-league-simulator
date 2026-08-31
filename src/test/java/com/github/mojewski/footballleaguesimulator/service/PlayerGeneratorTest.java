@@ -37,14 +37,14 @@ public class PlayerGeneratorTest {
         retiringPlayer = new PlayerBuilder()
                 .setFirstName("Robert")
                 .setLastName("Lewandowski")
-                .setAttributes(new PlayerAttributes(90, 40, 75, 92))
+                .setAttributes(new PlayerAttributes(90, 40, 75, 82, 85, 80, 92))
                 .setInjuryChance(50)
                 .setCountry(Country.POLAND)
                 .setPosition(Position.FORWARD)
                 .setTeam(team)
                 .setAge(38)
                 .setIsRetired(true)
-                .getResult();
+                .build();
     }
 
     @Test
@@ -76,7 +76,7 @@ public class PlayerGeneratorTest {
                 .setCountry(Country.POLAND)
                 .setPosition(Position.FORWARD)
                 .setTeam(topAcademyTeam)
-                .getResult();
+                .build();
 
         Player playerFromTopAcademy = playerGenerator.generateReplacement(topAcademyRetiringPlayer);
         Player playerFromWeakAcademy = playerGenerator.generateReplacement(retiringPlayer);

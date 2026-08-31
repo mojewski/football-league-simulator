@@ -52,7 +52,7 @@ public class PlayerGenerator {
                 .setStats(new PlayerStats())
                 .setStamina(stamina)
                 .setContract(contract)
-                .getResult();
+                .build();
     }
 
     private PlayerAttributes generateAttributesForPosition(Position position, int potential) {
@@ -61,8 +61,11 @@ public class PlayerGenerator {
         int shooting = boostSkill(baseSkill, position.getShootingBoost());
         int passing = boostSkill(baseSkill, position.getPassingBoost());
         int defending = boostSkill(baseSkill, position.getDefendingBoost());
+        int pace = boostSkill(baseSkill, 1.0);
+        int dribbling = boostSkill(baseSkill, position.getPassingBoost());
+        int physical = boostSkill(baseSkill, position.getDefendingBoost());
 
-        return new PlayerAttributes(shooting, defending, passing, potential);
+        return new PlayerAttributes(shooting, defending, passing, pace, dribbling, physical, potential);
     }
 
     private PlayerContract generatePlayerContract(PlayerAttributes attributes, Position position) {

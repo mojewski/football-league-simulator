@@ -22,9 +22,9 @@ public class InjuryStateTest {
                 .setFirstName("Robert")
                 .setLastName("Lewandowski")
                 .setPosition(Position.FORWARD)
-                .setAttributes(new PlayerAttributes(90, 85, 88, 92)) // Zastąpiono setRating
+                .setAttributes(new PlayerAttributes(90, 40, 75, 85, 88, 80, 92))
                 .setIsRetired(false)
-                .getResult();
+                .build();
     }
 
     @Test
@@ -42,8 +42,9 @@ public class InjuryStateTest {
         int initialOverall = player.getOverall();
 
         player.getCurrentState().passDay(player);
+        player.recalculateOverall();
 
-        assertEquals(6, injuryState.getDropAmount());
+        assertEquals(12, injuryState.getDropAmount());
         assertTrue(player.getOverall() < initialOverall);
         assertTrue(injuryState.isPenaltyApplied());
     }

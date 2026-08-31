@@ -18,7 +18,7 @@ public class SuspendedStateTest {
         player = new PlayerBuilder()
                 .setFirstName("Robert")
                 .setLastName("Lewandowski")
-                .getResult();
+                .build();
     }
 
     @Test

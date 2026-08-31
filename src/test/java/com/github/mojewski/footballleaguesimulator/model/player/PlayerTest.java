@@ -16,7 +16,7 @@ public class PlayerTest {
     @BeforeEach
     void setUp() {
         testTeam = new Team("FC Barcelona", 1000000000, 90, 99);
-        testAttributes = new PlayerAttributes(90, 30, 60, 90);
+        testAttributes = new PlayerAttributes(90, 30, 60, 85, 88, 80, 90);
     }
 
     private PlayerBuilder createBasePlayerBuilder() {
@@ -34,7 +34,7 @@ public class PlayerTest {
     @Test
     void ShouldCalculateOverallCorrectly() {
 
-        Player player = createBasePlayerBuilder().getResult();
+        Player player = createBasePlayerBuilder().build();
 
         assertTrue(player.getOverall() > 0);
         assertEquals(player.getAttributes().calculateOverall(Position.FORWARD), player.getOverall());
@@ -45,7 +45,7 @@ public class PlayerTest {
 
         Player player = createBasePlayerBuilder()
                 .setAge(20)
-                .getResult();
+                .build();
 
         assertFalse(player.decideRetirement());
         assertFalse(player.getIsRetired());
@@ -56,7 +56,7 @@ public class PlayerTest {
 
         Player player = createBasePlayerBuilder()
                 .setAge(41)
-                .getResult();
+                .build();
 
         assertTrue(player.decideRetirement());
         assertTrue(player.getIsRetired());
@@ -68,7 +68,7 @@ public class PlayerTest {
         Team firstTeam = new Team("Bayern Munchen", 1_000_000_000, 85, 87);
         Player player = createBasePlayerBuilder()
                 .setTeam(firstTeam)
-                .getResult();
+                .build();
         PlayerContract contract = new PlayerContract(999_999, 5);
         player.signContract(contract, testTeam);
 
@@ -80,7 +80,7 @@ public class PlayerTest {
     @Test
     void ShouldTerminateContract() {
 
-        Player player = createBasePlayerBuilder().getResult();
+        Player player = createBasePlayerBuilder().build();
         PlayerContract contract = new PlayerContract(999_999, 5);
         player.signContract(contract, testTeam);
         player.terminateContract();
