@@ -44,12 +44,10 @@ public class Player {
         this.stats = builder.getStats();
         this.stamina = builder.getStamina();
         this.contract = builder.getContract();
-        if (this.attributes != null && this.position != null) {
-            this.overall = this.attributes.calculateOverall(this.position);
-        }
+        recalculateOverall();
     }
 
-    public void calculateOverall() {
+    public void recalculateOverall() {
         if (this.attributes != null && this.position != null) {
             this.overall = this.attributes.calculateOverall(this.position);
         }
@@ -60,10 +58,10 @@ public class Player {
     }
 
     public boolean decideRetirement() {
-        if(isRetired) return true;
+        if (isRetired) return true;
         int chance = getRetiredProbability();
         int draw = ThreadLocalRandom.current().nextInt(1, 101);
-        if(draw <= chance) this.isRetired = true;
+        if (draw <= chance) this.isRetired = true;
         return this.isRetired;
     }
 
@@ -89,6 +87,14 @@ public class Player {
         this.team = null;
     }
 
+    public void setForSale(boolean forSale) {
+        this.isForSale = forSale;
+    }
+
+    public void setStamina(int stamina) {
+        this.stamina = Math.min(99, Math.max(1, stamina));
+    }
+
     public Long getId() { return id; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
@@ -96,6 +102,7 @@ public class Player {
     public Country getCountry() { return country; }
     public Position getPosition() { return position; }
     public int getAge() { return age; }
+    public int getForm() { return form; }
     public boolean isForSale() { return isForSale; }
     public boolean getIsRetired() { return isRetired; }
     public Team getTeam() { return team; }

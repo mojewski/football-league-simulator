@@ -27,7 +27,7 @@ public class InjuryState implements PlayerState {
 
         if (initialDays >= 60 && !penaltyApplied) {
             applySkillDrop(player);
-            player.calculateOverall();
+            player.recalculateOverall();
             penaltyApplied = true;
         }
 
@@ -45,9 +45,10 @@ public class InjuryState implements PlayerState {
     public void playMatch(Player player) {}
 
     private void applySkillDrop(Player player) {
-        dropAmount = (initialDays / 60) * 2;
+        dropAmount = (initialDays / 60) * 4;
         if (player.getAttributes() != null) {
             player.getAttributes().decreaseSkills(dropAmount, player.getPosition());
+            player.recalculateOverall();
         }
     }
 

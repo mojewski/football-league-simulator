@@ -13,7 +13,7 @@ public class PlayerBuilderTest {
 
         String expectedFirstName = "Robert";
         String expectedLastName = "Lewandowski";
-        PlayerAttributes expectedAttributes = new PlayerAttributes(90, 40, 75, 92);
+        PlayerAttributes expectedAttributes = new PlayerAttributes(90, 40, 75, 85, 88, 80, 92);
         int expectedInjuryChance = 50;
         Country expectedCountry = Country.POLAND;
         Position expectedPosition = Position.FORWARD;
@@ -30,7 +30,7 @@ public class PlayerBuilderTest {
                 .setTeam(expectedTeam)
                 .setAge(expectedAge)
                 .setIsRetired(false)
-                .getResult();
+                .build();
 
         assertNotNull(player, "Player should not be NULL");
         assertEquals(expectedFirstName, player.getFirstName());

@@ -19,7 +19,7 @@ public class UnfitStateTest {
         player = new PlayerBuilder()
                 .setFirstName("Robert")
                 .setLastName("Lewandowski")
-                .getResult();
+                .build();
     }
 
     @Test

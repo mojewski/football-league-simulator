@@ -17,7 +17,7 @@ public class PlayerBuilder {
     private PlayerState currentState;
     private PlayerAttributes attributes;
     private PlayerStats stats = new PlayerStats();
-    private int stamina;
+    private int stamina = 100;
     private PlayerContract contract;
 
     public PlayerBuilder setFirstName(String firstName) { this.firstName = firstName; return this; }
@@ -28,13 +28,15 @@ public class PlayerBuilder {
     public PlayerBuilder setAge(int age) { this.age = age; return this; }
     public PlayerBuilder setIsRetired(boolean isRetired) { this.isRetired = isRetired; return this; }
     public PlayerBuilder setTeam(Team team) { this.team = team; return this; }
-    public PlayerBuilder setCurrentState(PlayerState currentState) { this.currentState = currentState; return this;}
+    public PlayerBuilder setCurrentState(PlayerState currentState) { this.currentState = currentState; return this; }
     public PlayerBuilder setAttributes(PlayerAttributes attributes) { this.attributes = attributes; return this; }
     public PlayerBuilder setStats(PlayerStats stats) { this.stats = stats; return this; }
     public PlayerBuilder setStamina(int stamina) { this.stamina = stamina; return this; }
     public PlayerBuilder setContract(PlayerContract contract) { this.contract = contract; return this; }
 
-    public Player getResult() { return new Player(this); }
+    public Player build() {
+        return new Player(this);
+    }
 
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
