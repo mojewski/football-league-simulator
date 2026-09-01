@@ -25,6 +25,10 @@ public class InjuryState implements PlayerState {
     public void passDay(Player player) {
         daysRemaining--;
 
+        if (player.getStamina() > 30) {
+            player.setStamina(30);
+        }
+
         if (initialDays >= 60 && !penaltyApplied) {
             applySkillDrop(player);
             player.recalculateOverall();

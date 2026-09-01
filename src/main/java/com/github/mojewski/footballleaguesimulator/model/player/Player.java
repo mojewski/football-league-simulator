@@ -53,6 +53,13 @@ public class Player {
         }
     }
 
+    public int getEffectiveOverall() {
+        if (this.attributes == null || this.position == null) {
+            return 0;
+        }
+        return this.attributes.calculateEffectiveOverall(this.position, this.stamina);
+    }
+
     public void setState(PlayerState state) {
         this.currentState = state;
     }
@@ -93,6 +100,29 @@ public class Player {
 
     public void setStamina(int stamina) {
         this.stamina = Math.min(99, Math.max(1, stamina));
+    }
+
+    public void updateStamina(int staminaModifier) {
+        setStamina(this.stamina + staminaModifier);
+    }
+
+    public void regenerateStamina(int amount) {
+        updateStamina(Math.abs(amount));
+    }
+
+    public void drainStamina(int amount) {
+        updateStamina(-Math.abs(amount));
+    }
+
+    public int getEffectiveInjuryChance() {
+        if (this.stamina >= 60) {
+            return this.injuryChance;
+        }
+
+        double exhaustionFactor = (60.0 - this.stamina) / 60.0;
+        double multiplier = 1.0 + (exhaustionFactor * 2.0);
+
+        return (int) Math.round(this.injuryChance * multiplier);
     }
 
     public Long getId() { return id; }
