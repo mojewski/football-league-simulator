@@ -56,4 +56,32 @@ public class UnfitStateTest {
         assertEquals(0, unfitState.getDaysRemaining());
         assertInstanceOf(AvailableState.class, player.getCurrentState());
     }
+
+    @Test
+    void shouldCalculateTargetStaminaCorrectlyOverTime() {
+
+        player.setStamina(30);
+
+        int initialDays = 10;
+        UnfitState unfitState = new UnfitState(initialDays);
+        player.setState(unfitState);
+
+        unfitState.passDay(player);
+        assertEquals(37, player.getStamina());
+        assertEquals(9, unfitState.getDaysRemaining());
+
+        for (int i = 0; i < 4; i++) {
+            unfitState.passDay(player);
+        }
+        assertEquals(65, player.getStamina());
+        assertEquals(5, unfitState.getDaysRemaining());
+
+        for (int i = 0; i < 5; i++) {
+            unfitState.passDay(player);
+        }
+
+        assertEquals(99, player.getStamina());
+        assertEquals(0, unfitState.getDaysRemaining());
+        assertTrue(player.getCurrentState() instanceof AvailableState);
+    }
 }
