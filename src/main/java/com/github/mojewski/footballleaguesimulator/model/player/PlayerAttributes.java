@@ -101,6 +101,18 @@ public class PlayerAttributes {
         else return ThreadLocalRandom.current().nextInt(9, 13);
     }
 
+    public double getStaminaModifier(int stamina) {
+        if (stamina >= 70) {
+            return 1.0;
+        }
+        return 0.60 + (stamina / 70.0) * 0.40;
+    }
+
+    public int calculateEffectiveOverall(Position position, int stamina) {
+        int baseOverall = calculateOverall(position);
+        return (int) Math.round(baseOverall * getStaminaModifier(stamina));
+    }
+
     public int getShooting() { return shooting; }
     public int getDefending() { return defending; }
     public int getPassing() { return passing; }

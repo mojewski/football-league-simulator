@@ -11,9 +11,9 @@ public class PlayerStats {
     private double averageRating;
     private double totalRatingSum;
 
-    public PlayerStats() {
-        reset();
-    }
+    private int daysInjuried;
+
+    public PlayerStats() { reset(); }
 
     public void addMatchesPlayed() { this.matchesPlayed++; }
     public void addGoals(int count) { if (count > 0) this.goals += count; }
@@ -21,9 +21,10 @@ public class PlayerStats {
     public void addCleanSheet() { this.cleanSheets++; }
     public void addYellowCard() { this.yellowCards++; }
     public void addRedCard() { this.redCards++; }
+    public void addDayInjuried() { this.daysInjuried++; }
 
     public void calculateAverageRating(double matchRating) {
-        if (matchRating < 1.0 || matchRating > 10.0) {
+        if (this.matchesPlayed == 0 || matchRating < 1.0 || matchRating > 10.0) {
             return;
         }
         this.totalRatingSum += matchRating;
@@ -41,6 +42,7 @@ public class PlayerStats {
         this.redCards = 0;
         this.averageRating = 0.0;
         this.totalRatingSum = 0.0;
+        this.daysInjuried = 0;
     }
 
     public int getMatchesPlayed() { return matchesPlayed; }
@@ -50,4 +52,5 @@ public class PlayerStats {
     public int getYellowCards() { return yellowCards; }
     public int getRedCards() { return redCards; }
     public double getAverageRating() { return averageRating; }
+    public int getDaysInjuried() { return daysInjuried; }
 }
