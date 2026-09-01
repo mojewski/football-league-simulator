@@ -2,6 +2,7 @@ package com.github.mojewski.footballleaguesimulator.model.player.player_state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Injury;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
+import com.github.mojewski.footballleaguesimulator.model.player.PlayerStats;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
 
 public class InjuryState implements PlayerState {
@@ -24,6 +25,7 @@ public class InjuryState implements PlayerState {
     @Override
     public void passDay(Player player) {
         daysRemaining--;
+        player.getStats().addDayInjuried();
 
         if (player.getStamina() > 30) {
             player.setStamina(30);

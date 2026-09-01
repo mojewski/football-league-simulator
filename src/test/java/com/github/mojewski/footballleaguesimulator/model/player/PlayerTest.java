@@ -89,4 +89,21 @@ public class PlayerTest {
         assertNull(player.getContract());
         assertFalse(player.hasActiveContract());
     }
+
+    @Test
+    void ShouldCalculateEffectiveInjuryChanceCorrectly() {
+        Player player = createBasePlayerBuilder()
+                .setInjuryChance(10)
+                .setStamina(80)
+                .build();
+
+        assertEquals(player.getInjuryChance(), player.getEffectiveInjuryChance());
+
+        player.drainStamina(50);
+        assertTrue(player.getInjuryChance() < player.getEffectiveInjuryChance());
+        assertEquals(20, player.getEffectiveInjuryChance());
+
+        player.setStamina(1);
+        assertEquals(30, player.getEffectiveInjuryChance());
+    }
 }
