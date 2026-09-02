@@ -64,6 +64,8 @@ public class Player {
         this.currentState = state;
     }
 
+    public void setTeam(Team team) { this.team = team; }
+
     public boolean decideRetirement() {
         if (isRetired) return true;
         int chance = getRetiredProbability();

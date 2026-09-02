@@ -2,6 +2,7 @@ package com.github.mojewski.footballleaguesimulator.model.player;
 
 import com.github.mojewski.footballleaguesimulator.model.Country;
 import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
+import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ public class PlayerTest {
 
     @BeforeEach
     void setUp() {
-        testTeam = new Team("FC Barcelona", 1000000000, 90, 99);
+        testTeam = new Team("FC Barcelona", 1000000000, 90, 99, Formation.F_3_4_3);
         testAttributes = new PlayerAttributes(90, 30, 60, 85, 88, 80, 90);
     }
 
@@ -65,7 +66,7 @@ public class PlayerTest {
     @Test
     void ShouldSignContractAndAssignTeamCorrectly() {
 
-        Team firstTeam = new Team("Bayern Munchen", 1_000_000_000, 85, 87);
+        Team firstTeam = new Team("Bayern Munchen", 1_000_000_000, 85, 87, Formation.F_3_4_3);
         Player player = createBasePlayerBuilder()
                 .setTeam(firstTeam)
                 .build();

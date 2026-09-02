@@ -1,6 +1,7 @@
 package com.github.mojewski.footballleaguesimulator.model.player;
 
 import com.github.mojewski.footballleaguesimulator.model.Country;
+import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ public class PlayerBuilderTest {
         int expectedInjuryChance = 50;
         Country expectedCountry = Country.POLAND;
         Position expectedPosition = Position.FORWARD;
-        Team expectedTeam = new Team("FC Barcelona", 1000000000, 10, 99);
+        Team expectedTeam = new Team("FC Barcelona", 1000000000, 10, 99, Formation.F_3_5_2);
         int expectedAge = 38;
 
         Player player = new PlayerBuilder()
