@@ -3,8 +3,6 @@ package com.github.mojewski.footballleaguesimulator.model.team.state;
 import com.github.mojewski.footballleaguesimulator.model.match.MatchResult;
 import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
-import com.github.mojewski.footballleaguesimulator.model.team.team_state.CrisisState;
-import com.github.mojewski.footballleaguesimulator.model.team.team_state.NeutralState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

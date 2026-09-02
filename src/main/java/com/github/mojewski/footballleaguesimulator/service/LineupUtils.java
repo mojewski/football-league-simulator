@@ -1,7 +1,8 @@
-package com.github.mojewski.footballleaguesimulator.model.team;
+package com.github.mojewski.footballleaguesimulator.service;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
+import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,40 +1,39 @@
 package com.github.mojewski.footballleaguesimulator.service;
 
-import com.github.mojewski.footballleaguesimulator.model.*;
+import com.github.mojewski.footballleaguesimulator.model.Country;
 import com.github.mojewski.footballleaguesimulator.model.player.*;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
+import com.github.mojewski.footballleaguesimulator.model.player.state.AvailableState;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerGenerator {
 
     private final NameGenerator nameGenerator;
+    private final RandomNumberGenerator random;
 
-    public PlayerGenerator(NameGenerator nameGenerator) {
+    public PlayerGenerator(NameGenerator nameGenerator, RandomNumberGenerator random) {
         this.nameGenerator = nameGenerator;
+        this.random = random;
     }
 
     public Player generateReplacement(Player retiringPlayer) {
         Team team = retiringPlayer.getTeam();
         int academyLevel = team.getAcademyRating();
 
-        int age = ThreadLocalRandom.current().nextInt(16, 21);
+        int age = random.getRandomInt(16, 20);
         Country country = retiringPlayer.getCountry();
         String firstName = nameGenerator.generateFirstName(country);
         String lastName = nameGenerator.generateLastName(country);
         Position position = retiringPlayer.getPosition();
 
         int basePotential = 5 + (int) (academyLevel * 0.85);
-        int variation = ThreadLocalRandom.current().nextInt(-10, 11);
+        int variation = random.getRandomInt(-10, 10);
         int rawPotential = basePotential + variation;
 
         int potential = Math.min(99, Math.max(5, rawPotential));
 
         PlayerAttributes attributes = generateAttributesForPosition(position, potential);
-        int injuryChance = ThreadLocalRandom.current().nextInt(5, 60);
-
-        int stamina = ThreadLocalRandom.current().nextInt(20, 100);
+        int injuryChance = random.getRandomInt(5, 60);
+        int stamina = random.getRandomInt(20, 99);
 
         PlayerContract contract = generatePlayerContract(attributes, position);
 
@@ -47,7 +46,6 @@ public class PlayerGenerator {
                 .setAttributes(attributes)
                 .setInjuryChance(injuryChance)
                 .setTeam(team)
-                .setIsRetired(false)
                 .setCurrentState(new AvailableState())
                 .setStats(new PlayerStats())
                 .setStamina(stamina)
@@ -56,7 +54,17 @@ public class PlayerGenerator {
     }
 
     private PlayerAttributes generateAttributesForPosition(Position position, int potential) {
-        int baseSkill = (int) (potential * ThreadLocalRandom.current().nextDouble(0.6, 0.76));
+        int baseSkill = (int) (potential * random.getRandomDouble(0.6, 0.76));
+
+        if (position == Position.GOALKEEPER) {
+            int reflex = boostSkill(baseSkill, 1.25);
+            int handling = boostSkill(baseSkill, 1.15);
+            int passing = boostSkill(baseSkill, 0.8);
+            int pace = boostSkill(baseSkill, 0.7);
+            int physical = boostSkill(baseSkill, 1.0);
+
+            return new PlayerAttributes(reflex, handling, passing, pace, physical, potential);
+        }
 
         int shooting = boostSkill(baseSkill, position.getShootingBoost());
         int passing = boostSkill(baseSkill, position.getPassingBoost());
@@ -69,25 +77,21 @@ public class PlayerGenerator {
     }
 
     private PlayerContract generatePlayerContract(PlayerAttributes attributes, Position position) {
-        int duration = ThreadLocalRandom.current().nextInt(1, 6);
-
+        int duration = random.getRandomInt(1, 5);
         int overall = attributes.calculateOverall(position);
 
         double baseSalary = Math.pow(overall, 3.6) * 0.7;
-
         int potentialBonus = Math.max(0, attributes.getPotential() - overall) * 500;
-
-        double variation = ThreadLocalRandom.current().nextDouble(0.90, 1.10);
+        double variation = random.getRandomDouble(0.90, 1.10);
 
         int finalSalary = (int) Math.round((baseSalary + potentialBonus) * variation);
-
         finalSalary = Math.max(500, finalSalary);
 
         return new PlayerContract(finalSalary, duration);
     }
 
     private int boostSkill(int baseSkill, double multiplier) {
-        int variation = ThreadLocalRandom.current().nextInt(-5, 6);
+        int variation = random.getRandomInt(-5, 5);
         int calculated = (int) (baseSkill * multiplier) + variation;
         return Math.min(99, Math.max(1, calculated));
     }

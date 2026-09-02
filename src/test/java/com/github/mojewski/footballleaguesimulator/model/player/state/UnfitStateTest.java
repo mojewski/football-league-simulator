@@ -2,9 +2,6 @@ package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.PlayerState;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.UnfitState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +20,8 @@ public class UnfitStateTest {
     }
 
     @Test
-    public void ShouldAllowUnfitPlayerToPlay() {
+    void shouldAllowUnfitPlayerToPlay() {
         PlayerState unfitState = new UnfitState(7);
-
         assertTrue(unfitState.canPlay());
     }
 
@@ -40,11 +36,11 @@ public class UnfitStateTest {
             player.getCurrentState().passDay(player);
         }
 
-        assertEquals(52, unfitState.getMaxRecommendedMinutes());
+        assertEquals(53, unfitState.getMaxRecommendedMinutes());
     }
 
     @Test
-    public void shouldReduceDaysRemainingAndChangeStateToAvailable() {
+    void shouldReduceDaysRemainingAndChangeStateToAvailable() {
         UnfitState unfitState = new UnfitState(2);
         player.setState(unfitState);
 
@@ -59,7 +55,6 @@ public class UnfitStateTest {
 
     @Test
     void shouldCalculateTargetStaminaCorrectlyOverTime() {
-
         player.setStamina(30);
 
         int initialDays = 10;

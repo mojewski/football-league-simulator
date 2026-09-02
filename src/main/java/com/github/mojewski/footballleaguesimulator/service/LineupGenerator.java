@@ -2,7 +2,6 @@ package com.github.mojewski.footballleaguesimulator.service;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.team.Formation;
-import com.github.mojewski.footballleaguesimulator.model.team.LineupUtils;
 import com.github.mojewski.footballleaguesimulator.model.team.MatchLineup;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 

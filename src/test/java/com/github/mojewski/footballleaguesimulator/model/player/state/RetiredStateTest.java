@@ -2,8 +2,6 @@ package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.PlayerState;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.RetiredState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,14 +20,14 @@ public class RetiredStateTest {
     }
 
     @Test
-    public void ShouldNotAllowRetiredPlayerToPlay() {
+    void shouldNotAllowRetiredPlayerToPlay() {
         PlayerState retiredState = new RetiredState();
 
         assertFalse(retiredState.canPlay());
     }
 
     @Test
-    public void shouldRemainInRetiredStateOnPassDayAndPlayMatch() {
+    void shouldRemainInRetiredStateOnPassDayAndPlayMatch() {
         PlayerState retiredState = new RetiredState();
         player.setState(retiredState);
 

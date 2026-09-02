@@ -1,10 +1,6 @@
 package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.*;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.InjuryState;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.PlayerState;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.UnfitState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,27 +19,24 @@ public class InjuryStateTest {
                 .setLastName("Lewandowski")
                 .setPosition(Position.FORWARD)
                 .setAttributes(new PlayerAttributes(90, 40, 75, 85, 88, 80, 92))
-                .setIsRetired(false)
                 .setStats(new PlayerStats())
                 .build();
     }
 
     @Test
-    public void ShouldNotAllowInjuriedPlayerToPlay() {
+    void shouldNotAllowInjuredPlayerToPlay() {
         PlayerState injuryState = new InjuryState(injury);
-
         assertFalse(injuryState.canPlay());
     }
 
     @Test
-    public void ShouldApplyValidSkillDrop() {
+    void shouldApplyValidSkillDrop() {
         InjuryState injuryState = new InjuryState(injury);
         player.setState(injuryState);
 
         int initialOverall = player.getOverall();
 
         player.getCurrentState().passDay(player);
-        player.recalculateOverall();
 
         assertEquals(12, injuryState.getDropAmount());
         assertTrue(player.getOverall() < initialOverall);
@@ -51,7 +44,7 @@ public class InjuryStateTest {
     }
 
     @Test
-    public void ShouldReduceDaysOffCorrectly() {
+    void shouldReduceDaysOffCorrectly() {
         InjuryState injuryState = new InjuryState(injury);
         player.setState(injuryState);
 
@@ -66,7 +59,7 @@ public class InjuryStateTest {
     }
 
     @Test
-    public void ShouldChangeStateToUnfitState() {
+    void shouldChangeStateToUnfitState() {
         InjuryState injuryState = new InjuryState(injury);
         player.setState(injuryState);
 
@@ -81,7 +74,7 @@ public class InjuryStateTest {
     }
 
     @Test
-    public void ShouldChangeStateToAvailableState() {
+    void shouldChangeStateToAvailableState() {
         Injury shortInjury = new Injury("Example of injury", 2, 2);
         InjuryState injuryState = new InjuryState(shortInjury);
         player.setState(injuryState);
@@ -94,7 +87,7 @@ public class InjuryStateTest {
     }
 
     @Test
-    public void ShouldNotApplySkillDropForShortInjury() {
+    void shouldNotApplySkillDropForShortInjury() {
         Injury shortInjury = new Injury("Short injury", 2, 2);
         InjuryState injuryState = new InjuryState(shortInjury);
         player.setState(injuryState);
@@ -109,7 +102,7 @@ public class InjuryStateTest {
     }
 
     @Test
-    public void ShouldCapStaminaAtThirtyDuringInjury() {
+    void shouldCapStaminaAtThirtyDuringInjury() {
         player.setStamina(90);
         PlayerState injuryState = new InjuryState(injury);
         player.setState(injuryState);
@@ -120,14 +113,14 @@ public class InjuryStateTest {
     }
 
     @Test
-    public void ShouldIncrementDaysInjuriedInPlayerStats() {
+    void shouldIncrementDaysInjuredInPlayerStats() {
         PlayerState injuryState = new InjuryState(injury);
         player.setState(injuryState);
 
-        int initialDaysInjuried = player.getStats().getDaysInjuried();
+        int initialDaysInjured = player.getStats().getDaysInjured();
 
         player.getCurrentState().passDay(player);
 
-        assertEquals(initialDaysInjuried + 1, player.getStats().getDaysInjuried());
+        assertEquals(initialDaysInjured + 1, player.getStats().getDaysInjured());
     }
 }

@@ -4,7 +4,7 @@ public enum Position {
     FORWARD(0.7, 0.2, 0.1),
     MIDFIELDER(0.3, 0.4, 0.3),
     DEFENDER(0.1, 0.3, 0.6),
-    GOALKEEPER(0.0, 0.1, 0.9);
+    GOALKEEPER(0.0, 0.0, 0.0);
 
     private final double shootingWeight;
     private final double passingWeight;
@@ -28,7 +28,7 @@ public enum Position {
             case FORWARD -> 1.2;
             case MIDFIELDER -> 0.9;
             case DEFENDER -> 0.4;
-            case GOALKEEPER -> 0.2;
+            case GOALKEEPER -> 0.0;
         };
     }
 
@@ -37,7 +37,7 @@ public enum Position {
             case FORWARD -> 0.9;
             case MIDFIELDER -> 1.2;
             case DEFENDER -> 0.8;
-            case GOALKEEPER -> 0.5;
+            case GOALKEEPER -> 0.0;
         };
     }
 
@@ -46,7 +46,7 @@ public enum Position {
             case FORWARD -> 0.5;
             case MIDFIELDER -> 0.9;
             case DEFENDER -> 1.25;
-            case GOALKEEPER -> 1.3;
+            case GOALKEEPER -> 0.0;
         };
     }
 
