@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model.team.team_strategy;
+package com.github.mojewski.footballleaguesimulator.model.team.strategy;
 
 public interface MatchStrategy {
 

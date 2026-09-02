@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model.player.player_state;
+package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 

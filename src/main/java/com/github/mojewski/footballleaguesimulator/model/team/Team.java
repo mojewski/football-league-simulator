@@ -2,9 +2,9 @@ package com.github.mojewski.footballleaguesimulator.model.team;
 
 import com.github.mojewski.footballleaguesimulator.model.match.MatchResult;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
-import com.github.mojewski.footballleaguesimulator.model.player.Position;
-import com.github.mojewski.footballleaguesimulator.model.team.team_state.NeutralState;
-import com.github.mojewski.footballleaguesimulator.model.team.team_state.TeamMoraleState;
+import com.github.mojewski.footballleaguesimulator.model.team.state.NeutralState;
+import com.github.mojewski.footballleaguesimulator.model.team.state.TeamMoraleState;
+import com.github.mojewski.footballleaguesimulator.service.LineupUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;

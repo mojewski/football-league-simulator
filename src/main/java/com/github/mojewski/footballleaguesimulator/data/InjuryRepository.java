@@ -1,14 +1,14 @@
 package com.github.mojewski.footballleaguesimulator.data;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Injury;
+import com.github.mojewski.footballleaguesimulator.service.RandomNumberGenerator;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class InjuryRepository {
 
-    private final List<Injury> possibleInjuries = List.of(
-
+    private static final List<Injury> POSSIBLE_INJURIES = List.of(
             new Injury("Stłuczenie mięśnia uda", 3, 7),
             new Injury("Naciągnięcie mięśnia łydki", 5, 12),
             new Injury("Skręcenie stawu skokowego (I stopień)", 7, 14),
@@ -35,11 +35,16 @@ public class InjuryRepository {
     );
 
     public Injury getRandomInjury() {
-        int index = ThreadLocalRandom.current().nextInt(possibleInjuries.size());
-        return possibleInjuries.get(index);
+        int index = ThreadLocalRandom.current().nextInt(POSSIBLE_INJURIES.size());
+        return POSSIBLE_INJURIES.get(index);
+    }
+
+    public Injury getRandomInjury(RandomNumberGenerator random) {
+        int index = random.getRandomInt(0, POSSIBLE_INJURIES.size() - 1);
+        return POSSIBLE_INJURIES.get(index);
     }
 
     public List<Injury> getPossibleInjuries() {
-        return possibleInjuries;
+        return POSSIBLE_INJURIES;
     }
 }

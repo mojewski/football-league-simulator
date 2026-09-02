@@ -1,30 +1,29 @@
 package com.github.mojewski.footballleaguesimulator.model.player;
 
 import com.github.mojewski.footballleaguesimulator.model.Country;
+import com.github.mojewski.footballleaguesimulator.model.player.state.PlayerState;
+import com.github.mojewski.footballleaguesimulator.model.player.state.RetiredState;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.PlayerState;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Player {
-
+    //TODO: forma wplywajaca na effectiveoverall, transferservice
     private Long id;
-    private String firstName;
-    private String lastName;
-    private int age;
+    private final String firstName;
+    private final String lastName;
+    private final int age;
     private int form;
 
-    private Country country;
-    private Position position;
+    private final Country country;
+    private final Position position;
 
-    private PlayerAttributes attributes;
+    private final PlayerAttributes attributes;
     private int overall;
-    private PlayerStats stats;
+    private final PlayerStats stats;
 
     private boolean isForSale;
-    private boolean isRetired;
 
     private Team team;
-    private int injuryChance;
+    private final int injuryChance;
     private PlayerState currentState;
 
     private int stamina;
@@ -37,7 +36,6 @@ public class Player {
         this.country = builder.getCountry();
         this.position = builder.getPosition();
         this.age = builder.getAge();
-        this.isRetired = builder.getIsRetired();
         this.team = builder.getTeam();
         this.currentState = builder.getCurrentState();
         this.attributes = builder.getAttributes();
@@ -64,22 +62,24 @@ public class Player {
         this.currentState = state;
     }
 
-    public void setTeam(Team team) { this.team = team; }
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
-    public boolean decideRetirement() {
-        if (isRetired) return true;
-        int chance = getRetiredProbability();
-        int draw = ThreadLocalRandom.current().nextInt(1, 101);
-        if (draw <= chance) this.isRetired = true;
-        return this.isRetired;
+    public boolean decideRetirement(int randomRoll) {
+        if (isRetired()) return true;
+        if (randomRoll <= getRetiredProbability()) {
+            this.currentState = new RetiredState();
+        }
+        return isRetired();
     }
 
     private int getRetiredProbability() {
         if (this.age < 32) return 0;
-        else if (this.age <= 35) return 10;
-        else if (this.age <= 38) return 50;
-        else if (this.age <= 40) return 70;
-        else return 100;
+        if (this.age <= 35) return 10;
+        if (this.age <= 38) return 50;
+        if (this.age <= 40) return 70;
+        return 100;
     }
 
     public boolean hasActiveContract() {
@@ -88,12 +88,21 @@ public class Player {
 
     public void signContract(PlayerContract newContract, Team newTeam) {
         this.contract = newContract;
-        this.team = newTeam;
+        if (this.team != null && this.team != newTeam) {
+            this.team.removePlayer(this);
+        }
+        if (newTeam != null) {
+            newTeam.addPlayer(this);
+        }
     }
 
     public void terminateContract() {
         this.contract = null;
-        this.team = null;
+        if (this.team != null) {
+            Team oldTeam = this.team;
+            this.team = null;
+            oldTeam.removePlayer(this);
+        }
     }
 
     public void setForSale(boolean forSale) {
@@ -136,7 +145,7 @@ public class Player {
     public int getAge() { return age; }
     public int getForm() { return form; }
     public boolean isForSale() { return isForSale; }
-    public boolean getIsRetired() { return isRetired; }
+    public boolean isRetired() { return currentState instanceof RetiredState; }
     public Team getTeam() { return team; }
     public PlayerState getCurrentState() { return currentState; }
     public PlayerAttributes getAttributes() { return attributes; }

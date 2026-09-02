@@ -30,10 +30,9 @@ public class PlayerBuilderTest {
                 .setPosition(expectedPosition)
                 .setTeam(expectedTeam)
                 .setAge(expectedAge)
-                .setIsRetired(false)
                 .build();
 
-        assertNotNull(player, "Player should not be NULL");
+        assertNotNull(player);
         assertEquals(expectedFirstName, player.getFirstName());
         assertEquals(expectedLastName, player.getLastName());
         assertEquals(expectedAttributes, player.getAttributes());
@@ -42,7 +41,7 @@ public class PlayerBuilderTest {
         assertEquals(expectedPosition, player.getPosition());
         assertEquals(expectedTeam, player.getTeam());
         assertEquals(expectedAge, player.getAge());
-        assertFalse(player.getIsRetired());
+        assertFalse(player.isRetired());
         assertTrue(player.getOverall() > 0);
     }
 }

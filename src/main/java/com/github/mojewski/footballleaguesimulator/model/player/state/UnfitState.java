@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model.player.player_state;
+package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 
@@ -13,7 +13,9 @@ public class UnfitState implements PlayerState {
     }
 
     @Override
-    public boolean canPlay() { return true; }
+    public boolean canPlay() {
+        return true;
+    }
 
     @Override
     public void passDay(Player player) {
@@ -29,6 +31,7 @@ public class UnfitState implements PlayerState {
     @Override
     public void playMatch(Player player) {
         player.regenerateStamina(10);
+        // TODO: zrobic inaczej logike wplywu meczu na kondycje
     }
 
     public int getMaxRecommendedMinutes() {
@@ -36,13 +39,15 @@ public class UnfitState implements PlayerState {
         int minMinutes = 15;
         int maxMinutes = 90;
 
-        return minMinutes + (int) (recoveryProgress * (maxMinutes - minMinutes));
+        return minMinutes + (int) Math.round(recoveryProgress * (maxMinutes - minMinutes));
     }
 
     private int calculateTargetStamina() {
         double progress = (double) (initialDays - daysRemaining) / initialDays;
-        return 30 + (int) (progress * 70);
+        return 30 + (int) Math.round(progress * 69);
     }
 
-    public int getDaysRemaining() { return daysRemaining; }
+    public int getDaysRemaining() {
+        return daysRemaining;
+    }
 }

@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model.player.player_state;
+package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 
@@ -7,11 +7,13 @@ public class SuspendedState implements PlayerState {
     private int matchesOff;
 
     public SuspendedState(int matchesOff) {
-        this.matchesOff = matchesOff;
+        this.matchesOff = Math.max(1, matchesOff);
     }
 
     @Override
-    public boolean canPlay() { return false; }
+    public boolean canPlay() {
+        return false;
+    }
 
     @Override
     public void passDay(Player player) {
@@ -29,4 +31,3 @@ public class SuspendedState implements PlayerState {
         return matchesOff;
     }
 }
-

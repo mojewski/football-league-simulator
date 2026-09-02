@@ -2,15 +2,13 @@ package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.PlayerState;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.SuspendedState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SuspendedStateTest {
+
     private Player player;
 
     @BeforeEach
@@ -22,14 +20,13 @@ public class SuspendedStateTest {
     }
 
     @Test
-    public void ShouldNotAllowSuspendedPlayerToPlay() {
+    void shouldNotAllowSuspendedPlayerToPlay() {
         PlayerState suspendedState = new SuspendedState(1);
-
         assertFalse(suspendedState.canPlay());
     }
 
     @Test
-    public void ShouldReduceDaysOffCorrectly() {
+    void shouldReduceDaysOffCorrectly() {
         SuspendedState suspendedState = new SuspendedState(5);
         player.setState(suspendedState);
 
@@ -38,11 +35,11 @@ public class SuspendedStateTest {
     }
 
     @Test
-    public void ShouldChangeStateToAvailable() {
+    void shouldChangeStateToAvailable() {
         SuspendedState suspendedState = new SuspendedState(5);
         player.setState(suspendedState);
 
-        while(suspendedState.getMatchesOff() > 0) {
+        while (suspendedState.getMatchesOff() > 0) {
             player.getCurrentState().playMatch(player);
         }
 

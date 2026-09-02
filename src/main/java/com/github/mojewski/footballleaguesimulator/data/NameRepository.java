@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class NameRepository {
 
-    private final Map<Country, List<String>> firstNames = new EnumMap<>(Country.class);
-    private final Map<Country, List<String>> lastNames = new EnumMap<>(Country.class);
+    private static final Map<Country, List<String>> firstNames = new EnumMap<>(Country.class);
+    private static final Map<Country, List<String>> lastNames = new EnumMap<>(Country.class);
 
     private static final List<String> DEFAULT_FIRST_NAME = List.of("Adam", "John");
     private static final List<String> DEFAULT_LAST_NAME = List.of("Smith", "Pork");

@@ -3,7 +3,7 @@ package com.github.mojewski.footballleaguesimulator.service;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
-import com.github.mojewski.footballleaguesimulator.model.player.player_state.AvailableState;
+import com.github.mojewski.footballleaguesimulator.model.player.state.AvailableState;
 import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 import com.github.mojewski.footballleaguesimulator.model.team.MatchLineup;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
