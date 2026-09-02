@@ -1,6 +1,7 @@
 package com.github.mojewski.footballleaguesimulator.model.team.state;
 
 import com.github.mojewski.footballleaguesimulator.model.match.MatchResult;
+import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 import com.github.mojewski.footballleaguesimulator.model.team.team_state.CrisisState;
 import com.github.mojewski.footballleaguesimulator.model.team.team_state.HighMoraleState;
@@ -18,7 +19,7 @@ public class HighMoraleStateTest {
 
     @BeforeEach
     void setUp() {
-        team = new Team("FC Test", 1_000_000, 60, 7);
+        team = new Team("FC Test", 1_000_000, 60, 7, Formation.F_3_5_2);
         team.setTeamState(new HighMoraleState());
     }
 

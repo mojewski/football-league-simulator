@@ -5,6 +5,7 @@ import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerAttributes;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
+import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ public class PlayerGeneratorTest {
         when(nameGenerator.generateFirstName(any(Country.class))).thenReturn("Jan");
         when(nameGenerator.generateLastName(any(Country.class))).thenReturn("Kowalski");
 
-        team = new Team("FC Barcelona", 1000000000, 10, 99);
+        team = new Team("FC Barcelona", 1000000000, 10, 99, Formation.F_3_5_2);
         retiringPlayer = new PlayerBuilder()
                 .setFirstName("Robert")
                 .setLastName("Lewandowski")
@@ -71,7 +72,7 @@ public class PlayerGeneratorTest {
 
     @Test
     void shouldGenerateBetterPotentialForBetterAcademy() {
-        Team topAcademyTeam = new Team("Academy 99", 1_000_000, 99, 99);
+        Team topAcademyTeam = new Team("Academy 99", 1_000_000, 99, 99, Formation.F_3_5_2);
         Player topAcademyRetiringPlayer = new PlayerBuilder()
                 .setCountry(Country.POLAND)
                 .setPosition(Position.FORWARD)

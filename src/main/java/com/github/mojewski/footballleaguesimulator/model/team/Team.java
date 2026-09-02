@@ -36,6 +36,8 @@ public class Team {
         this.formation = formation;
     }
 
+    public void setFormation(Formation formation) { this.formation = formation; }
+
     public void setTeamState(TeamMoraleState state) {
         this.currentState = state;
     }
@@ -50,11 +52,17 @@ public class Team {
     }
 
     public void addPlayer(Player player) {
-        players.add(player);
+        if (player != null && !players.contains(player)) {
+            players.add(player);
+            player.setTeam(this);
+        }
     }
 
     public void removePlayer(Player player) {
-        players.remove(player);
+        if (player != null && players.contains(player)) {
+            players.remove(player);
+            player.setTeam(null);
+        }
     }
 
     public void addBudget(double amount) { this.budget += amount; }
