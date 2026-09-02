@@ -2,10 +2,12 @@ package com.github.mojewski.footballleaguesimulator.model.team;
 
 import com.github.mojewski.footballleaguesimulator.model.match.MatchResult;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
+import com.github.mojewski.footballleaguesimulator.model.player.Position;
 import com.github.mojewski.footballleaguesimulator.model.team.team_state.NeutralState;
 import com.github.mojewski.footballleaguesimulator.model.team.team_state.TeamMoraleState;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Team {
@@ -18,16 +20,20 @@ public class Team {
     private int academyRating;
     private int reputation;
     private TeamMoraleState currentState;
+    private Formation formation;
 
     private TeamStats teamStats = new TeamStats();
     private List<Player> players = new ArrayList<>();
 
-    public Team(String name, double budget, int academyRating, int reputation) {
+    private MatchLineup activeLineup;
+
+    public Team(String name, double budget, int academyRating, int reputation, Formation formation) {
         this.name = name;
         this.budget = budget;
         this.academyRating = academyRating;
         this.reputation = reputation;
         this.currentState = new NeutralState();
+        this.formation = formation;
     }
 
     public void setTeamState(TeamMoraleState state) {
@@ -54,25 +60,23 @@ public class Team {
     public void addBudget(double amount) { this.budget += amount; }
     public void subtractBudget(double amount) { this.budget -= amount; }
 
-    public List<Player> getStartingEleven() {
-        return players.stream()
-                .sorted((p1, p2) -> Integer.compare(
-                        p2.getAttributes().calculateOverall(p2.getPosition()),
-                        p1.getAttributes().calculateOverall(p1.getPosition())
-                ))
-                .limit(STARTING_ELEVEN_SIZE)
-                .toList();
+    private List<Player> getBestLineup() {
+        return LineupUtils.buildLineupForFormation(
+                players,
+                formation,
+                Comparator.comparingInt(Player::getOverall).reversed()
+        );
     }
 
     public double calculateTeamRating() {
-        return getStartingEleven().stream()
+        return getBestLineup().stream()
                 .mapToInt(p -> p.getAttributes().calculateOverall(p.getPosition()))
                 .average()
                 .orElse(0.0);
     }
 
     public double calculateTeamAttackRating() {
-        return getStartingEleven().stream()
+        return getBestLineup().stream()
                 .mapToInt(p -> (p.getAttributes().getShooting()
                         + p.getAttributes().getDribbling()
                         + p.getAttributes().getPace()) / 3)
@@ -81,7 +85,7 @@ public class Team {
     }
 
     public double calculateTeamMidfieldRating() {
-        return getStartingEleven().stream()
+        return getBestLineup().stream()
                 .mapToInt(p -> (p.getAttributes().getPassing()
                         + p.getAttributes().getDribbling()) / 2)
                 .average()
@@ -89,13 +93,15 @@ public class Team {
     }
 
     public double calculateTeamDefenseRating() {
-        return getStartingEleven().stream()
+        return getBestLineup().stream()
                 .mapToInt(p -> (p.getAttributes().getDefending()
                         + p.getAttributes().getPhysical()
                         + p.getAttributes().getPace()) / 3)
                 .average()
                 .orElse(0.0);
     }
+
+    public void setActiveLineup(MatchLineup lineup) { this.activeLineup = lineup; }
 
     public Long getId() { return id; }
     public String getName() { return name; }
@@ -105,4 +111,6 @@ public class Team {
     public List<Player> getPlayerList() { return players; }
     public TeamStats getTeamStats() { return teamStats; }
     public TeamMoraleState getCurrentState() { return currentState; }
+    public Formation getFormation() { return formation; }
+    public MatchLineup getActiveLineup() { return activeLineup; }
 }
