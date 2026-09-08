@@ -20,7 +20,7 @@ public class HighMoraleStateTest {
     }
 
     @Test
-    public void ShouldChangeStateToNeutralCorrectlyAfterDraw() {
+    public void shouldChangeStateToNeutralCorrectlyAfterDraw() {
         team.updateMorale(MatchResult.DRAW);
 
         assertThat(team.getCurrentState()).isInstanceOf(NeutralState.class);
@@ -31,7 +31,7 @@ public class HighMoraleStateTest {
     }
 
     @Test
-    public void ShouldChangeStateToNeutralCorrectlyAfterLoss() {
+    public void shouldChangeStateToNeutralCorrectlyAfterLoss() {
         team.updateMorale(MatchResult.LOSS);
 
         assertThat(team.getCurrentState()).isInstanceOf(NeutralState.class);

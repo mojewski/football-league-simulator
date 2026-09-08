@@ -20,7 +20,7 @@ public class CrisisStateTest {
     }
 
     @Test
-    public void ShouldChangeStateToNeutralCorrectlyAfterDraw() {
+    public void shouldChangeStateToNeutralCorrectlyAfterDraw() {
         team.updateMorale(MatchResult.DRAW);
 
         assertThat(team.getCurrentState()).isInstanceOf(NeutralState.class);
@@ -31,7 +31,7 @@ public class CrisisStateTest {
     }
 
     @Test
-    public void ShouldChangeStateToNeutralCorrectlyAfterWin() {
+    public void shouldChangeStateToNeutralCorrectlyAfterWin() {
         team.updateMorale(MatchResult.WIN);
 
         assertThat(team.getCurrentState()).isInstanceOf(NeutralState.class);

@@ -2,6 +2,7 @@ package com.github.mojewski.footballleaguesimulator.model.team;
 
 import com.github.mojewski.footballleaguesimulator.model.match.MatchResult;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
+import com.github.mojewski.footballleaguesimulator.model.player.Position;
 import com.github.mojewski.footballleaguesimulator.model.team.state.NeutralState;
 import com.github.mojewski.footballleaguesimulator.model.team.state.TeamMoraleState;
 import com.github.mojewski.footballleaguesimulator.service.LineupUtils;
@@ -78,33 +79,31 @@ public class Team {
 
     public double calculateTeamRating() {
         return getBestLineup().stream()
-                .mapToInt(p -> p.getAttributes().calculateOverall(p.getPosition()))
+                .mapToInt(Player::getEffectiveOverall)
                 .average()
                 .orElse(0.0);
     }
 
     public double calculateTeamAttackRating() {
         return getBestLineup().stream()
-                .mapToInt(p -> (p.getAttributes().getShooting()
-                        + p.getAttributes().getDribbling()
-                        + p.getAttributes().getPace()) / 3)
+                .filter(player -> player.getPosition() == Position.FORWARD)
+                .mapToInt(Player::getEffectiveOverall)
                 .average()
                 .orElse(0.0);
     }
 
     public double calculateTeamMidfieldRating() {
         return getBestLineup().stream()
-                .mapToInt(p -> (p.getAttributes().getPassing()
-                        + p.getAttributes().getDribbling()) / 2)
+                .filter(player -> player.getPosition() == Position.MIDFIELDER)
+                .mapToInt(Player::getEffectiveOverall)
                 .average()
                 .orElse(0.0);
     }
 
     public double calculateTeamDefenseRating() {
         return getBestLineup().stream()
-                .mapToInt(p -> (p.getAttributes().getDefending()
-                        + p.getAttributes().getPhysical()
-                        + p.getAttributes().getPace()) / 3)
+                .filter(player -> player.getPosition() == Position.DEFENDER || player.getPosition() == Position.GOALKEEPER)
+                .mapToInt(Player::getEffectiveOverall)
                 .average()
                 .orElse(0.0);
     }

@@ -19,7 +19,7 @@ public class NeutralStateTest {
     }
 
     @Test
-    public void ShouldChangeStateToCrisisAfterThreeLossesInRow() {
+    public void shouldChangeStateToCrisisAfterThreeLossesInRow() {
         team.updateMorale(MatchResult.LOSS);
         team.updateMorale(MatchResult.LOSS);
         team.updateMorale(MatchResult.LOSS);
@@ -28,7 +28,7 @@ public class NeutralStateTest {
     }
 
     @Test
-    public void ShouldChangeStateToHighMoraleAfterThreeWinsInRow() {
+    public void shouldChangeStateToHighMoraleAfterThreeWinsInRow() {
         team.updateMorale(MatchResult.WIN);
         team.updateMorale(MatchResult.WIN);
         team.updateMorale(MatchResult.WIN);
@@ -37,7 +37,7 @@ public class NeutralStateTest {
     }
 
     @Test
-    public void ShouldNotChangeStateAfterLossesAndWinsNotInRow() {
+    public void shouldNotChangeStateAfterLossesAndWinsNotInRow() {
         team.updateMorale(MatchResult.LOSS);
         team.updateMorale(MatchResult.LOSS);
         team.updateMorale(MatchResult.DRAW);
