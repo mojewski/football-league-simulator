@@ -51,7 +51,14 @@ public class PlayerAttributes {
                     + (pace * 0.10);
             return (int) Math.round(weightedRating);
         }
-        return position.calculateOverall(this.shooting, this.passing, this.defending);
+        return position.calculateOverall(
+                this.shooting,
+                this.passing,
+                this.defending,
+                this.pace,
+                this.dribbling,
+                this.physical
+        );
     }
 
     public void decreaseSkills(int dropAmount, Position position, RandomNumberGenerator random) {
