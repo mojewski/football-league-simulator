@@ -4,6 +4,7 @@ import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
 import com.github.mojewski.footballleaguesimulator.model.player.state.AvailableState;
+import com.github.mojewski.footballleaguesimulator.model.player.state.SuspendedState;
 import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 import com.github.mojewski.footballleaguesimulator.model.team.MatchLineup;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
@@ -37,7 +38,7 @@ public class LineupGeneratorTest {
     }
 
     @Test
-    void ShouldCreateCorrectNumberOfPlayersInLineupAndBench() {
+    void shouldCreateCorrectNumberOfPlayersInLineupAndBench() {
         MatchLineup matchLineup = lineupGenerator.generateAutoLineup(testTeam);
 
         assertEquals(11, matchLineup.getStartingEleven().size());
@@ -45,7 +46,7 @@ public class LineupGeneratorTest {
     }
 
     @Test
-    void ShouldCreateCorrectNumberOfPlayersInDifferentFormation() {
+    void shouldCreateCorrectNumberOfPlayersInDifferentFormation() {
         MatchLineup lineup352 = lineupGenerator.generateAutoLineup(testTeam);
 
         assertEquals(1, lineup352.getStartingPlayersForPosition(Position.GOALKEEPER).size());
@@ -60,5 +61,29 @@ public class LineupGeneratorTest {
         assertEquals(4, lineup451.getStartingPlayersForPosition(Position.DEFENDER).size());
         assertEquals(5, lineup451.getStartingPlayersForPosition(Position.MIDFIELDER).size());
         assertEquals(1, lineup451.getStartingPlayersForPosition(Position.FORWARD).size());
+    }
+
+    @Test
+    void shouldNotSelectUnavailablePlayers() {
+        Player suspendedStar = new PlayerBuilder()
+                .setPosition(Position.FORWARD)
+                .setCurrentState(new SuspendedState(2))
+                .build();
+        testTeam.addPlayer(suspendedStar);
+
+        MatchLineup matchLineup = lineupGenerator.generateAutoLineup(testTeam);
+
+        assertFalse(matchLineup.getStartingEleven().contains(suspendedStar));
+        assertFalse(matchLineup.getBench().contains(suspendedStar));
+    }
+
+    @Test
+    void shouldNotHaveDuplicatePlayersBetweenStartingElevenAndBench() {
+        MatchLineup matchLineup = lineupGenerator.generateAutoLineup(testTeam);
+
+        boolean hasOverlap = matchLineup.getStartingEleven().stream()
+                .anyMatch(matchLineup.getBench()::contains);
+
+        assertFalse(hasOverlap);
     }
 }
