@@ -14,19 +14,23 @@ public class League {
 
     private Long id;
     private String name;
+    private int reputation;
     private int tier;
     private Country country;
 
     private List<Team> teams = new ArrayList<>();
 
-    public League(String name, int tier, Country country) {
+    public League(String name, int reputation, int tier, Country country) {
         this.name = name;
+        this.reputation = reputation;
         this.tier = tier;
         this.country = country;
     }
 
     public Long getId() { return id; }
     public String getName() { return name; }
+    public int getReputation() { return reputation; }
     public int getTier() { return tier; }
     public Country getCountry() { return country; }
+    public List<Team> getTeams() { return teams; }
 }

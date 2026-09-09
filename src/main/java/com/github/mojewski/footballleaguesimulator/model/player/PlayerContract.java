@@ -1,11 +1,13 @@
 package com.github.mojewski.footballleaguesimulator.model.player;
 
+import com.github.mojewski.footballleaguesimulator.service.RandomNumberGenerator;
+
 public class PlayerContract {
 
-    private int salaryPerYear;
+    private double salaryPerYear;
     private int durationInYears;
 
-    public PlayerContract(int salaryPerYear, int durationInYears) {
+    public PlayerContract(double salaryPerYear, int durationInYears) {
         this.salaryPerYear = salaryPerYear;
         this.durationInYears = durationInYears;
     }
@@ -20,6 +22,6 @@ public class PlayerContract {
         }
     }
 
-    public int getSalaryPerYear() { return salaryPerYear; }
+    public double getSalaryPerYear() { return salaryPerYear; }
     public int getDurationInYears() { return durationInYears; }
 }
