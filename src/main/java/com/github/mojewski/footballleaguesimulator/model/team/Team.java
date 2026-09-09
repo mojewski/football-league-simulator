@@ -18,6 +18,7 @@ public class Team {
     private Long id;
     private String name;
     private double budget;
+    private double startingBudget;
     private int academyRating;
     private int reputation;
     private TeamMoraleState currentState;
@@ -31,6 +32,7 @@ public class Team {
     public Team(String name, double budget, int academyRating, int reputation, Formation formation) {
         this.name = name;
         this.budget = budget;
+        this.startingBudget = budget;
         this.academyRating = academyRating;
         this.reputation = reputation;
         this.currentState = new NeutralState();
@@ -113,6 +115,7 @@ public class Team {
     public Long getId() { return id; }
     public String getName() { return name; }
     public double getBudget() { return budget; }
+    public double getStartingBudget() { return startingBudget; }
     public int getAcademyRating() { return academyRating; }
     public int getReputation() { return reputation; }
     public List<Player> getPlayerList() { return players; }

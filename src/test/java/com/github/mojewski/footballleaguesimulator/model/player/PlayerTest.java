@@ -4,6 +4,7 @@ import com.github.mojewski.footballleaguesimulator.model.Country;
 import com.github.mojewski.footballleaguesimulator.model.player.state.AvailableState;
 import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
+import com.github.mojewski.footballleaguesimulator.service.RandomNumberGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,11 @@ public class PlayerTest {
 
     private Team testTeam;
     private PlayerAttributes testAttributes;
+    private final RandomNumberGenerator random;
+
+    public PlayerTest(RandomNumberGenerator random) {
+        this.random = random;
+    }
 
     @BeforeEach
     void setUp() {
