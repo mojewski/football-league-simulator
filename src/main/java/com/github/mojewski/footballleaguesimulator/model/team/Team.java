@@ -1,5 +1,6 @@
 package com.github.mojewski.footballleaguesimulator.model.team;
 
+import com.github.mojewski.footballleaguesimulator.model.league.League;
 import com.github.mojewski.footballleaguesimulator.model.match.MatchResult;
 import com.github.mojewski.footballleaguesimulator.model.player.FreeAgents;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
@@ -25,6 +26,8 @@ public class Team {
     private TeamMoraleState currentState;
     private Formation formation;
 
+    private League league;
+
     private TeamStats teamStats = new TeamStats();
     private List<Player> players = new ArrayList<>();
 
@@ -45,6 +48,8 @@ public class Team {
     public void setTeamState(TeamMoraleState state) {
         this.currentState = state;
     }
+
+    public void setLeague(League league) { this.league = league; }
 
     public void updateMorale(MatchResult result) {
         this.currentState.onMatchEnd(this, result);
@@ -127,6 +132,7 @@ public class Team {
     public double getStartingBudget() { return startingBudget; }
     public int getAcademyRating() { return academyRating; }
     public int getReputation() { return reputation; }
+    public League getLeague() { return league; }
     public List<Player> getPlayerList() { return players; }
     public TeamStats getTeamStats() { return teamStats; }
     public TeamMoraleState getCurrentState() { return currentState; }
