@@ -1,6 +1,10 @@
 package com.github.mojewski.footballleaguesimulator.model.player;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class PlayerStats {
+    private static final int FORM_MATCH_LIMIT = 5;
 
     private int matchesPlayed;
     private int goals;
@@ -11,6 +15,8 @@ public class PlayerStats {
     private double averageRating;
     private double totalRatingSum;
     private int ratedMatchesCount;
+
+    private final Deque<Double> lastMatchRatings = new ArrayDeque<>();
 
     private int daysInjured;
 
@@ -33,6 +39,26 @@ public class PlayerStats {
 
         double rawAverage = this.totalRatingSum / this.ratedMatchesCount;
         this.averageRating = Math.round(rawAverage * 100.0) / 100.0;
+
+        addMatchRating(matchRating);
+    }
+
+    public void addMatchRating(double rating) {
+        if (lastMatchRatings.size() >= FORM_MATCH_LIMIT) {
+            lastMatchRatings.pollFirst();
+        }
+        lastMatchRatings.addLast(rating);
+    }
+
+    public double calculateForm() {
+        if (lastMatchRatings.isEmpty()) {
+            return 6.0;
+        }
+
+        return lastMatchRatings.stream()
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(6.0);
     }
 
     public void reset() {
@@ -46,6 +72,7 @@ public class PlayerStats {
         this.totalRatingSum = 0.0;
         this.ratedMatchesCount = 0;
         this.daysInjured = 0;
+        this.lastMatchRatings.clear();
     }
 
     public int getMatchesPlayed() { return matchesPlayed; }
@@ -56,4 +83,5 @@ public class PlayerStats {
     public int getRedCards() { return redCards; }
     public double getAverageRating() { return averageRating; }
     public int getDaysInjured() { return daysInjured; }
+    public double getForm() { return calculateForm(); }
 }

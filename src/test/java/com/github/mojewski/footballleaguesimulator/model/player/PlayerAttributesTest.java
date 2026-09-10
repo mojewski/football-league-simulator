@@ -100,4 +100,25 @@ public class PlayerAttributesTest {
         assertEquals(1.0, attributes.getStaminaModifier(99));
         assertTrue(attributes.getStaminaModifier(35) < 1.0);
     }
+
+    @Test
+    void shouldCalculateFormModifierCorrectly() {
+        PlayerAttributes attributes = new PlayerAttributes(50, 50, 50, 50, 50, 50, 99);
+
+        assertEquals(1.0, attributes.getFormModifier(6.0), 0.001);
+        assertEquals(1.05, attributes.getFormModifier(10.0), 0.001);
+        assertEquals(0.9375, attributes.getFormModifier(1.0), 0.001);
+    }
+
+    @Test
+    void shouldCalculateEffectiveOverallWithFormAndStamina() {
+        PlayerAttributes attributes = new PlayerAttributes(80, 80, 80, 80, 80, 80, 99);
+        int baseOverall = attributes.calculateOverall(Position.FORWARD);
+
+        int effectiveBest = attributes.calculateEffectiveOverall(Position.FORWARD, 100, 10.0);
+        assertTrue(effectiveBest > baseOverall);
+
+        int effectiveWorst = attributes.calculateEffectiveOverall(Position.FORWARD, 20, 1.0);
+        assertTrue(effectiveWorst < baseOverall);
+    }
 }

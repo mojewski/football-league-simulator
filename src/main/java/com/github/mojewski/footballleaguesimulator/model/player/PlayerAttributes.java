@@ -185,9 +185,14 @@ public class PlayerAttributes {
         return 0.60 + (stamina / 70.0) * 0.40;
     }
 
-    public int calculateEffectiveOverall(Position position, int stamina) {
+    public double getFormModifier(double form) {
+        double clampedForm = Math.min(10.0, Math.max(1.0, form));
+        return 1.0 + ((clampedForm - 6.0) * 0.0125);
+    }
+
+    public int calculateEffectiveOverall(Position position, int stamina, double form) {
         int baseOverall = calculateOverall(position);
-        return (int) Math.round(baseOverall * getStaminaModifier(stamina));
+        return (int) Math.round(baseOverall * getStaminaModifier(stamina) * getFormModifier(form));
     }
 
     public int getShooting() { return shooting; }

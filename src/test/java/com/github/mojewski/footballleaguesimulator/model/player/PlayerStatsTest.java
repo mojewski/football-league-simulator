@@ -31,6 +31,18 @@ public class PlayerStatsTest {
     }
 
     @Test
+    void shouldCalculateFormCorrectly() {
+        assertEquals(6.0, stats.calculateForm());
+
+        stats.recordMatchPerformance(8.0);
+        stats.recordMatchPerformance(9.0);
+        stats.recordMatchPerformance(8.0);
+        stats.recordMatchPerformance(9.0);
+
+        assertEquals(8.5, stats.calculateForm());
+    }
+
+    @Test
     void shouldResetAllStats() {
         stats.addMatchesPlayed();
         stats.addGoals(2);

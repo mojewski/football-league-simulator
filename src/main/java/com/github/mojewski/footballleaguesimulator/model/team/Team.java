@@ -1,6 +1,7 @@
 package com.github.mojewski.footballleaguesimulator.model.team;
 
 import com.github.mojewski.footballleaguesimulator.model.match.MatchResult;
+import com.github.mojewski.footballleaguesimulator.model.player.FreeAgents;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
 import com.github.mojewski.footballleaguesimulator.model.team.state.NeutralState;
@@ -65,6 +66,14 @@ public class Team {
         if (player != null && players.contains(player)) {
             players.remove(player);
             player.setTeam(null);
+        }
+    }
+
+    public void releasePlayerToFreeAgents(Player player, FreeAgents freeAgents) {
+        if (player != null && players.contains(player)) {
+            removePlayer(player);
+            player.terminateContract();
+            freeAgents.addFreeAgent(player);
         }
     }
 
