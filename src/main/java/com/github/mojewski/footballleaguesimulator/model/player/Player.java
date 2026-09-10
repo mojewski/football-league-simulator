@@ -6,12 +6,11 @@ import com.github.mojewski.footballleaguesimulator.model.player.state.RetiredSta
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 
 public class Player {
-    //TODO: forma wplywajaca na effectiveoverall, transferservice
+
     private Long id;
     private final String firstName;
     private final String lastName;
     private final int age;
-    private int form;
 
     private final Country country;
     private final Position position;
@@ -55,7 +54,7 @@ public class Player {
         if (this.attributes == null || this.position == null) {
             return 0;
         }
-        return this.attributes.calculateEffectiveOverall(this.position, this.stamina);
+        return this.attributes.calculateEffectiveOverall(this.position, this.stamina, this.stats.calculateForm());
     }
 
     public void setState(PlayerState state) {
@@ -136,6 +135,8 @@ public class Player {
         return (int) Math.round(this.injuryChance * multiplier);
     }
 
+    public double getForm() { return stats.getForm(); }
+
     public Long getId() { return id; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
@@ -143,7 +144,6 @@ public class Player {
     public Country getCountry() { return country; }
     public Position getPosition() { return position; }
     public int getAge() { return age; }
-    public int getForm() { return form; }
     public boolean isForSale() { return isForSale; }
     public boolean isRetired() { return currentState instanceof RetiredState; }
     public Team getTeam() { return team; }

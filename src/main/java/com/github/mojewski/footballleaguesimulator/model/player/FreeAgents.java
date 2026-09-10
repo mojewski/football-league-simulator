@@ -6,7 +6,6 @@ import com.github.mojewski.footballleaguesimulator.service.SalaryCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class FreeAgents {
 
@@ -25,13 +24,6 @@ public class FreeAgents {
 
     public void removeFreeAgent(Player player) {
         freeAgents.remove(player);
-    }
-
-    public void releaseToFreeAgents(Player player) {
-        if (player != null) {
-            player.terminateContract();
-            addFreeAgent(player);
-        }
     }
 
     public List<Player> getFreeAgents() {
