@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.service;
+package com.github.mojewski.footballleaguesimulator.service.player;
 
 import com.github.mojewski.footballleaguesimulator.data.NameRepository;
 import com.github.mojewski.footballleaguesimulator.model.Country;

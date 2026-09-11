@@ -1,7 +1,11 @@
 package com.github.mojewski.footballleaguesimulator.model.league;
 
 import com.github.mojewski.footballleaguesimulator.model.Country;
+import com.github.mojewski.footballleaguesimulator.model.league.schedule.LeagueSchedule;
+import com.github.mojewski.footballleaguesimulator.model.league.tables.LeagueLeaderboards;
+import com.github.mojewski.footballleaguesimulator.model.league.tables.LeagueTable;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
+import com.github.mojewski.footballleaguesimulator.service.league.ScheduleGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +18,7 @@ public class League {
     private int reputation;
     private int tier;
     private Country country;
-    private LeagueCalendar calendar;
+    private LeagueSchedule schedule;
     private LeagueLeaderboards leaderboards;
     private LeagueRules rules;
     private LeagueTable table;
@@ -22,12 +26,11 @@ public class League {
     private final List<Team> teams = new ArrayList<>();
 
     public League(String name, int reputation, int tier, Country country,
-                  LeagueCalendar calendar, LeagueLeaderboards leaderboards, LeagueRules rules) {
+                  LeagueLeaderboards leaderboards, LeagueRules rules) {
         this.name = name;
         this.reputation = reputation;
         this.tier = tier;
         this.country = country;
-        startNewSeason(calendar, leaderboards, rules);
     }
 
     public void addTeam(Team team) {
@@ -50,8 +53,7 @@ public class League {
         }
     }
 
-    public void startNewSeason(LeagueCalendar calendar, LeagueLeaderboards leaderboards, LeagueRules rules) {
-        this.calendar = calendar;
+    public void startNewSeason(LeagueLeaderboards leaderboards, LeagueRules rules) {
         this.leaderboards = leaderboards;
         this.rules = rules;
         this.table = new LeagueTable();
@@ -59,6 +61,7 @@ public class League {
         for (Team team : teams) {
             this.table.addTeam(team);
         }
+        generateSchedule();
     }
 
     public Team getChampion() {
@@ -83,13 +86,18 @@ public class League {
         return table.getTeamsInStatusZone(startPosition, count);
     }
 
+    public void generateSchedule() {
+        ScheduleGenerator generator = new ScheduleGenerator(this);
+        this.schedule = new LeagueSchedule(generator.generateFullSchedule());
+    }
+
     public Long getId() { return id; }
     public String getName() { return name; }
     public int getReputation() { return reputation; }
     public int getTier() { return tier; }
     public Country getCountry() { return country; }
     public List<Team> getTeams() { return teams; }
-    public LeagueCalendar getCalendar() { return calendar; }
+    public LeagueSchedule getSchedule() { return schedule; }
     public LeagueLeaderboards getLeaderboards() { return leaderboards; }
     public LeagueRules getRules() { return rules; }
     public LeagueTable getTable() { return table; }

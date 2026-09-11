@@ -1,7 +1,5 @@
 package com.github.mojewski.footballleaguesimulator.model.player;
 
-import com.github.mojewski.footballleaguesimulator.service.RandomNumberGenerator;
-
 public class PlayerContract {
 
     private double salaryPerYear;

@@ -7,6 +7,7 @@ public class PlayerStats {
     private static final int FORM_MATCH_LIMIT = 5;
 
     private int matchesPlayed;
+    private int minutesPlayed;
     private int goals;
     private int assists;
     private int cleanSheets;
@@ -23,6 +24,7 @@ public class PlayerStats {
     public PlayerStats() { reset(); }
 
     public void addMatchesPlayed() { this.matchesPlayed++; }
+    public void addMinutesPlayed(int count) { this.minutesPlayed += count; }
     public void addGoals(int count) { if (count > 0) this.goals += count; }
     public void addAssists(int count) { if (count > 0) this.assists += count; }
     public void addCleanSheet() { this.cleanSheets++; }
@@ -61,8 +63,16 @@ public class PlayerStats {
                 .orElse(6.0);
     }
 
+    public double getMinutesPerMatch() {
+        if (matchesPlayed == 0) {
+            return 0.0;
+        }
+        return (double) minutesPlayed / matchesPlayed;
+    }
+
     public void reset() {
         this.matchesPlayed = 0;
+        this.minutesPlayed = 0;
         this.goals = 0;
         this.assists = 0;
         this.cleanSheets = 0;
@@ -76,6 +86,7 @@ public class PlayerStats {
     }
 
     public int getMatchesPlayed() { return matchesPlayed; }
+    public int getMinutesPlayed() { return minutesPlayed; }
     public int getGoals() { return goals; }
     public int getAssists() { return assists; }
     public int getCleanSheets() { return cleanSheets; }

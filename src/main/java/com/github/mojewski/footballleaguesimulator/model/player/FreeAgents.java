@@ -1,8 +1,6 @@
 package com.github.mojewski.footballleaguesimulator.model.player;
 
-import com.github.mojewski.footballleaguesimulator.model.team.Team;
-import com.github.mojewski.footballleaguesimulator.service.RandomNumberGenerator;
-import com.github.mojewski.footballleaguesimulator.service.SalaryCalculator;
+import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

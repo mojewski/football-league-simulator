@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.service;
+package com.github.mojewski.footballleaguesimulator.service.player;
 
 import com.github.mojewski.footballleaguesimulator.model.Country;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
@@ -7,6 +7,7 @@ import com.github.mojewski.footballleaguesimulator.model.player.PlayerBuilder;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
 import com.github.mojewski.footballleaguesimulator.model.team.Formation;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
+import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,6 @@ import org.mockito.quality.Strictness;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

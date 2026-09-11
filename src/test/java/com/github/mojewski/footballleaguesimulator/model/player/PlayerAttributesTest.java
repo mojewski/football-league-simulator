@@ -1,6 +1,6 @@
 package com.github.mojewski.footballleaguesimulator.model.player;
 
-import com.github.mojewski.footballleaguesimulator.service.RandomNumberGenerator;
+import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

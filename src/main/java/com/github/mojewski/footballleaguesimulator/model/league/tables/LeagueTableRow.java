@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.model.league;
+package com.github.mojewski.footballleaguesimulator.model.league.tables;
 
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 
