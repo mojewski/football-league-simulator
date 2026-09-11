@@ -1,7 +1,7 @@
 package com.github.mojewski.footballleaguesimulator.data;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Injury;
-import com.github.mojewski.footballleaguesimulator.service.RandomNumberGenerator;
+import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;

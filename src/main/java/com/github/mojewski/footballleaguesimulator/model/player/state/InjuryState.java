@@ -2,7 +2,7 @@ package com.github.mojewski.footballleaguesimulator.model.player.state;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Injury;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
-import com.github.mojewski.footballleaguesimulator.service.RandomNumberGenerator;
+import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 
 public class InjuryState implements PlayerState {
 

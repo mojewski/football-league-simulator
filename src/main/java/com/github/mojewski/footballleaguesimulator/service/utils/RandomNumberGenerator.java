@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.service;
+package com.github.mojewski.footballleaguesimulator.service.utils;
 
 import java.util.concurrent.ThreadLocalRandom;
 

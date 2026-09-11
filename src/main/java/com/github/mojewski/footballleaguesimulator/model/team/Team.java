@@ -7,7 +7,7 @@ import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
 import com.github.mojewski.footballleaguesimulator.model.team.state.NeutralState;
 import com.github.mojewski.footballleaguesimulator.model.team.state.TeamMoraleState;
-import com.github.mojewski.footballleaguesimulator.service.LineupUtils;
+import com.github.mojewski.footballleaguesimulator.service.team.LineupUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,6 +32,10 @@ public class Team {
     private List<Player> players = new ArrayList<>();
 
     private MatchLineup activeLineup;
+
+    public Team (String name) {
+        this.name = name;
+    }
 
     public Team(String name, double budget, int academyRating, int reputation, Formation formation) {
         this.name = name;

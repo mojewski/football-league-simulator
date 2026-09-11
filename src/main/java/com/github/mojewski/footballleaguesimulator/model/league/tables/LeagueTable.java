@@ -1,11 +1,11 @@
-package com.github.mojewski.footballleaguesimulator.model.league;
+package com.github.mojewski.footballleaguesimulator.model.league.tables;
 
+import com.github.mojewski.footballleaguesimulator.model.league.LeagueRules;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LeagueTable {
 

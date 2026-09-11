@@ -1,11 +1,9 @@
-package com.github.mojewski.footballleaguesimulator.service;
+package com.github.mojewski.footballleaguesimulator.service.player;
 
 import com.github.mojewski.footballleaguesimulator.data.NameRepository;
 import com.github.mojewski.footballleaguesimulator.model.Country;
 
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 

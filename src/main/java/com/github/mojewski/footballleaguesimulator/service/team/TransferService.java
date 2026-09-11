@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.service;
+package com.github.mojewski.footballleaguesimulator.service.team;
 
 import com.github.mojewski.footballleaguesimulator.TODO.Calendar;
 import com.github.mojewski.footballleaguesimulator.TODO.Simulation;
@@ -8,6 +8,8 @@ import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.PlayerContract;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
+import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
+import com.github.mojewski.footballleaguesimulator.service.player.SalaryCalculator;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,9 +1,10 @@
-package com.github.mojewski.footballleaguesimulator.service;
+package com.github.mojewski.footballleaguesimulator.service.player;
 
 import com.github.mojewski.footballleaguesimulator.model.Country;
 import com.github.mojewski.footballleaguesimulator.model.player.*;
 import com.github.mojewski.footballleaguesimulator.model.player.state.AvailableState;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
+import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 
 public class PlayerGenerator {
 

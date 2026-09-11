@@ -1,6 +1,7 @@
-package com.github.mojewski.footballleaguesimulator.service;
+package com.github.mojewski.footballleaguesimulator.service.player;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
+import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 
 public class SalaryCalculator {
 

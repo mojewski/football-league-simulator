@@ -1,4 +1,4 @@
-package com.github.mojewski.footballleaguesimulator.service;
+package com.github.mojewski.footballleaguesimulator.service.team;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
