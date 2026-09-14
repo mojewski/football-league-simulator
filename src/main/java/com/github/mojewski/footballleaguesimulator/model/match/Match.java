@@ -7,6 +7,10 @@ public class Match {
     private Team homeTeam;
     private Team awayTeam;
 
+    private boolean isPlayed;
+    private int homeGoals;
+    private int awayGoals;
+
     public Match(Team homeTeam, Team awayTeam) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
@@ -18,4 +22,8 @@ public class Match {
     public Team getAwayTeam() {
         return awayTeam;
     }
+
+    public boolean isPlayed() { return isPlayed; }
+    public int getHomeGoals() { return homeGoals; }
+    public int getAwayGoals() { return awayGoals; }
 }
