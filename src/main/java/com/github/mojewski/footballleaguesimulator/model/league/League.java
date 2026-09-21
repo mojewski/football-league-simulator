@@ -18,14 +18,15 @@ public class League {
     private int reputation;
     private int tier;
     private Country country;
+
     private LeagueSchedule schedule;
     private LeagueLeaderboards leaderboards;
     private LeagueRules rules;
-    private LeagueTable table;
+    private LeagueTable table = new LeagueTable();
 
     private final List<Team> teams = new ArrayList<>();
 
-    public League (String name) {
+    public League(String name) {
         this.name = name;
     }
 
@@ -40,9 +41,7 @@ public class League {
         if (team != null && !teams.contains(team)) {
             teams.add(team);
             team.setLeague(this);
-            if (this.table != null) {
-                this.table.addTeam(team);
-            }
+            this.table.addTeam(team);
         }
     }
 
@@ -50,13 +49,11 @@ public class League {
         if (team != null && teams.contains(team)) {
             teams.remove(team);
             team.setLeague(null);
-            if (this.table != null) {
-                this.table.removeTeam(team);
-            }
+            this.table.removeTeam(team);
         }
     }
 
-    public void startNewSeason(LeagueLeaderboards leaderboards, LeagueRules rules) {
+    public void startNewSeason(LeagueLeaderboards leaderboards, LeagueRules rules, ScheduleGenerator scheduleGenerator) {
         this.leaderboards = leaderboards;
         this.rules = rules;
         this.table = new LeagueTable();
@@ -64,7 +61,12 @@ public class League {
         for (Team team : teams) {
             this.table.addTeam(team);
         }
-        generateSchedule();
+
+        generateSchedule(scheduleGenerator);
+    }
+
+    public void generateSchedule(ScheduleGenerator scheduleGenerator) {
+        this.schedule = new LeagueSchedule(scheduleGenerator.generateFullSchedule(this));
     }
 
     public Team getChampion() {
@@ -87,11 +89,6 @@ public class League {
         int totalTeams = table.getRows().size();
         int startPosition = totalTeams - count + 1;
         return table.getTeamsInStatusZone(startPosition, count);
-    }
-
-    public void generateSchedule() {
-        ScheduleGenerator generator = new ScheduleGenerator(this);
-        this.schedule = new LeagueSchedule(generator.generateFullSchedule());
     }
 
     public Long getId() { return id; }
