@@ -21,7 +21,7 @@ public class LeagueTable {
         rows.removeIf(row -> row.getTeam().equals(team));
     }
 
-    public void updateTable(LeagueRules rules) {
+    public void updateTable() {
         Comparator<LeagueTableRow> comparator = Comparator
                 .comparingInt(LeagueTableRow::getPoints)
                 .thenComparingInt(LeagueTableRow::getGoalDifference)

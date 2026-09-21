@@ -29,8 +29,7 @@ public class League {
         this.name = name;
     }
 
-    public League(String name, int reputation, int tier, Country country,
-                  LeagueLeaderboards leaderboards, LeagueRules rules) {
+    public League(String name, int reputation, int tier, Country country) {
         this.name = name;
         this.reputation = reputation;
         this.tier = tier;
