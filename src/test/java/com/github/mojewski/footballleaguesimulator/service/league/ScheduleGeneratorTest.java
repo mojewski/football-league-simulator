@@ -13,21 +13,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ScheduleGeneratorTest {
 
-    League league;
-    ScheduleGenerator generator;
+    private League league;
+    private ScheduleGenerator generator;
 
     @BeforeEach
     void setUp() {
         league = new League("Test League");
-        for(int i = 0; i < 18; i++) {
+        for (int i = 0; i < 18; i++) {
             league.addTeam(new Team("FC Test " + i));
         }
-        generator = new ScheduleGenerator(league);
+        generator = new ScheduleGenerator();
     }
 
     @Test
     void shouldGenerateScheduleWithCorrectAmountOfMatches() {
-        List<Matchday> schedule = generator.generateFullSchedule();
+        List<Matchday> schedule = generator.generateFullSchedule(league);
 
         int totalMatchdays = schedule.size();
         int totalMatchesInMatchday = schedule.getFirst().matches().size();
@@ -51,9 +51,9 @@ public class ScheduleGeneratorTest {
         for (int i = 0; i < 17; i++) {
             oddLeague.addTeam(new Team("FC Test " + i));
         }
-        ScheduleGenerator oddGenerator = new ScheduleGenerator(oddLeague);
+        ScheduleGenerator oddGenerator = new ScheduleGenerator();
 
-        List<Matchday> schedule = oddGenerator.generateFullSchedule();
+        List<Matchday> schedule = oddGenerator.generateFullSchedule(oddLeague);
 
         boolean hasPauseMatch = schedule.stream()
                 .flatMap(matchday -> matchday.matches().stream())
@@ -70,7 +70,7 @@ public class ScheduleGeneratorTest {
 
     @Test
     void shouldGenerateSecondRoundCorrectly() {
-        List<Matchday> schedule = generator.generateFullSchedule();
+        List<Matchday> schedule = generator.generateFullSchedule(league);
         int halfRounds = schedule.size() / 2;
 
         for (int i = 0; i < halfRounds; i++) {
