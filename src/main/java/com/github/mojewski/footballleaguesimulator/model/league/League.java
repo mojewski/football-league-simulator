@@ -25,6 +25,10 @@ public class League {
 
     private final List<Team> teams = new ArrayList<>();
 
+    public League (String name) {
+        this.name = name;
+    }
+
     public League(String name, int reputation, int tier, Country country,
                   LeagueLeaderboards leaderboards, LeagueRules rules) {
         this.name = name;
