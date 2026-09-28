@@ -51,6 +51,10 @@ public class MatchOutcome {
         this.awayGoals = PoissonCalculator.generateGoals(this.awayXG);
     }
 
+    public boolean isHomeWin() { return homeGoals > awayGoals; }
+    public boolean isDraw() { return homeGoals == awayGoals; }
+    public boolean isAwayWin() { return awayGoals > homeGoals; }
+
     public Team getHomeTeam() {
         return homeTeam;
     }

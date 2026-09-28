@@ -19,12 +19,20 @@ public class MatchEventGenerator {
         this.random = random;
     }
 
-    public int generateStoppageTime() {
-        return random.getRandomInt(1, 11);
+    public int generateEventMinute() {
+        boolean isFirstHalf = random.getRandomInt(1, 100) <= 45;
+
+        if (isFirstHalf) {
+            int firstHalfStoppage = random.getRandomInt(0, 3);
+            return random.getRandomInt(1, 45 + firstHalfStoppage);
+        } else {
+            int secondHalfStoppage = random.getRandomInt(1, 10);
+            return random.getRandomInt(46, 90 + secondHalfStoppage);
+        }
     }
 
     public MatchEvent generateGoalEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider) {
-        int minute = random.getRandomInt(1, (90 + generateStoppageTime()));
+        int minute = generateEventMinute();
 
         List<Player> activePlayers = activePlayersProvider.apply(minute, team);
 
@@ -76,7 +84,7 @@ public class MatchEventGenerator {
     }
 
     public MatchEvent generateCardEvent(Team team, EventType cardType, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider) {
-        int minute = random.getRandomInt(1, (90 + generateStoppageTime()));
+        int minute = generateEventMinute();
         List<Player> activePlayers = activePlayersProvider.apply(minute, team);
 
         Player penalizedPlayer = WeightedRandomSelector.selectWeighted(
@@ -103,7 +111,7 @@ public class MatchEventGenerator {
     }
 
     public MatchEvent generateInjuryEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider) {
-        int minute = random.getRandomInt(1, (90 + generateStoppageTime()));
+        int minute = generateEventMinute();
         List<Player> activePlayers = activePlayersProvider.apply(minute, team);
 
         Player injuredPlayer = WeightedRandomSelector.selectWeighted(
@@ -134,7 +142,9 @@ public class MatchEventGenerator {
             return null;
         }
 
-        int minute = random.getRandomInt(45, (90 + generateStoppageTime()));
+        int secondHalfStoppage = random.getRandomInt(1, 6);
+        int minute = random.getRandomInt(45, 90 + secondHalfStoppage);
+
         List<Player> activePlayers = activePlayersProvider.apply(minute, team);
 
         List<Player> outfieldPlayers = activePlayers.stream()
