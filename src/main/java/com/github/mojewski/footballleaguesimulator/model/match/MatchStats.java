@@ -1,12 +1,7 @@
 package com.github.mojewski.footballleaguesimulator.model.match;
 
-import com.github.mojewski.footballleaguesimulator.model.player.Player;
-import com.github.mojewski.footballleaguesimulator.model.team.Team;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class MatchStats {
     private final int homeGoals;
@@ -88,14 +83,6 @@ public class MatchStats {
         this.awayCorners = awayCorners;
     }
 
-    public void setHomeAccuratePasses(int homeAccuratePasses) {
-        this.homeAccuratePasses = homeAccuratePasses;
-    }
-
-    public void setAwayAccuratePasses(int awayAccuratePasses) {
-        this.awayAccuratePasses = awayAccuratePasses;
-    }
-
     public void setHomeTotalPasses(int homeTotalPasses) {
         this.homeTotalPasses = homeTotalPasses;
     }
@@ -104,20 +91,30 @@ public class MatchStats {
         this.awayTotalPasses = awayTotalPasses;
     }
 
-    public void setHomeYellowCards(int homeYellowCards) {
-        this.homeYellowCards = homeYellowCards;
+    public void setHomeAccuratePasses(int homeAccuratePasses) {
+        this.homeAccuratePasses = homeAccuratePasses;
     }
 
-    public void setAwayYellowCards(int awayYellowCards) {
-        this.awayYellowCards = awayYellowCards;
+    public void setAwayAccuratePasses(int awayAccuratePasses) {
+        this.awayAccuratePasses = awayAccuratePasses;
     }
 
-    public void setHomeRedCards(int homeRedCards) {
-        this.homeRedCards = homeRedCards;
-    }
+    public void calculateCardsFromEvents() {
+        this.homeYellowCards = (int) events.stream()
+                .filter(e -> e.isHomeTeam() && e.type() == EventType.YELLOW_CARD)
+                .count();
 
-    public void setAwayRedCards(int awayRedCards) {
-        this.awayRedCards = awayRedCards;
+        this.awayYellowCards = (int) events.stream()
+                .filter(e -> !e.isHomeTeam() && e.type() == EventType.YELLOW_CARD)
+                .count();
+
+        this.homeRedCards = (int) events.stream()
+                .filter(e -> e.isHomeTeam() && e.type() == EventType.RED_CARD)
+                .count();
+
+        this.awayRedCards = (int) events.stream()
+                .filter(e -> !e.isHomeTeam() && e.type() == EventType.RED_CARD)
+                .count();
     }
 
     public void setHomeGoalkeeperSaves(int homeGoalkeeperSaves) {
