@@ -140,6 +140,7 @@ public class Player {
     public Long getId() { return id; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
+    public String getName() { return firstName + lastName;}
     public int getInjuryChance() { return injuryChance; }
     public Country getCountry() { return country; }
     public Position getPosition() { return position; }

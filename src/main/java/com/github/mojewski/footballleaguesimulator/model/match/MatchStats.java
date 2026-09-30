@@ -39,7 +39,8 @@ public class MatchStats {
     private int homeGoalkeeperSaves;
     private int awayGoalkeeperSaves;
 
-    private int stoppageTime;
+    private int firstHalfStoppage;
+    private int secondHalfStoppage;
 
     public MatchStats(MatchOutcome outcome, List<MatchEvent> events) {
         this.homeGoals = outcome.getHomeGoals();
@@ -125,8 +126,16 @@ public class MatchStats {
         this.awayGoalkeeperSaves = awayGoalkeeperSaves;
     }
 
-    public void setStoppageTime(int stoppageTime) {
-        this.stoppageTime = stoppageTime;
+    public void setFirstHalfStoppage(int firstHalfStoppage) { this.firstHalfStoppage = firstHalfStoppage; }
+
+    public void setSecondHalfStoppage(int secondHalfStoppage) { this.secondHalfStoppage = secondHalfStoppage; }
+
+    public int getFirstHalfStoppage() { return firstHalfStoppage; }
+
+    public int getSecondHalfStoppage() { return secondHalfStoppage; }
+
+    public int getTotalStoppageTime() {
+        return firstHalfStoppage + secondHalfStoppage;
     }
 
     public int getHomeGoals() {
@@ -219,9 +228,5 @@ public class MatchStats {
 
     public int getAwayGoalkeeperSaves() {
         return awayGoalkeeperSaves;
-    }
-
-    public int getStoppageTime() {
-        return stoppageTime;
     }
 }

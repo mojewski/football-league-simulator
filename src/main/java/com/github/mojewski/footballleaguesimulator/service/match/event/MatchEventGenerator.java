@@ -5,6 +5,7 @@ import com.github.mojewski.footballleaguesimulator.model.match.MatchEvent;
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.player.Position;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
+import com.github.mojewski.footballleaguesimulator.service.match.StoppageTime;
 import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 
 import java.util.Comparator;
@@ -19,20 +20,18 @@ public class MatchEventGenerator {
         this.random = random;
     }
 
-    public int generateEventMinute() {
+    public int generateEventMinute(StoppageTime stoppageTime) {
         boolean isFirstHalf = random.getRandomInt(1, 100) <= 45;
 
         if (isFirstHalf) {
-            int firstHalfStoppage = random.getRandomInt(0, 3);
-            return random.getRandomInt(1, 45 + firstHalfStoppage);
+            return random.getRandomInt(1, 45 + stoppageTime.firstHalf());
         } else {
-            int secondHalfStoppage = random.getRandomInt(1, 10);
-            return random.getRandomInt(46, 90 + secondHalfStoppage);
+            return random.getRandomInt(46, 90 + stoppageTime.secondHalf());
         }
     }
 
-    public MatchEvent generateGoalEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider) {
-        int minute = generateEventMinute();
+    public MatchEvent generateGoalEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider, StoppageTime stoppage) {
+        int minute = generateEventMinute(stoppage);
 
         List<Player> activePlayers = activePlayersProvider.apply(minute, team);
 
@@ -83,8 +82,8 @@ public class MatchEventGenerator {
         return positionFactor * overallFactor;
     }
 
-    public MatchEvent generateCardEvent(Team team, EventType cardType, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider) {
-        int minute = generateEventMinute();
+    public MatchEvent generateCardEvent(Team team, EventType cardType, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider, StoppageTime stoppage) {
+        int minute = generateEventMinute(stoppage);
         List<Player> activePlayers = activePlayersProvider.apply(minute, team);
 
         Player penalizedPlayer = WeightedRandomSelector.selectWeighted(
@@ -110,8 +109,8 @@ public class MatchEventGenerator {
         return positionFactor;
     }
 
-    public MatchEvent generateInjuryEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider) {
-        int minute = generateEventMinute();
+    public MatchEvent generateInjuryEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider, StoppageTime stoppage) {
+        int minute = generateEventMinute(stoppage);
         List<Player> activePlayers = activePlayersProvider.apply(minute, team);
 
         Player injuredPlayer = WeightedRandomSelector.selectWeighted(
@@ -137,13 +136,12 @@ public class MatchEventGenerator {
         return positionFactor * ageFactor;
     }
 
-    public MatchEvent generateSubstitutionEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider, List<Player> bench) {
+    public MatchEvent generateSubstitutionEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider, List<Player> bench, StoppageTime stoppage) {
         if (bench.isEmpty()) {
             return null;
         }
 
-        int secondHalfStoppage = random.getRandomInt(1, 6);
-        int minute = random.getRandomInt(45, 90 + secondHalfStoppage);
+        int minute = random.getRandomInt(45, 90 + stoppage.secondHalf());
 
         List<Player> activePlayers = activePlayersProvider.apply(minute, team);
 
