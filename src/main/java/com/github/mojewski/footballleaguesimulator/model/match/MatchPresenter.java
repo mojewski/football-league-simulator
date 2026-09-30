@@ -28,7 +28,7 @@ public class MatchPresenter {
         log.info("PRZERWA");
         sleepUnchecked(1000);
 
-        for(int i = 45; i <= secondHalfEnd; i++) {
+        for(int i = 46; i <= secondHalfEnd; i++) {
             logEvent(i, events);
             sleepUnchecked(delay);
         }

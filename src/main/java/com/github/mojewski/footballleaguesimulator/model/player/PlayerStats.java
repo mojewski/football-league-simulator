@@ -45,7 +45,7 @@ public class PlayerStats {
         addMatchRating(matchRating);
     }
 
-    public void addMatchRating(double rating) {
+    private void addMatchRating(double rating) {
         if (lastMatchRatings.size() >= FORM_MATCH_LIMIT) {
             lastMatchRatings.pollFirst();
         }

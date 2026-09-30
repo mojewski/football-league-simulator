@@ -62,6 +62,9 @@ public class TeamStats {
 
     public void reset() {
         this.matchesPlayed = 0;
+        this.wins = 0;
+        this.draws = 0;
+        this.losses = 0;
         this.goals = 0;
         this.assists = 0;
         this.cleanSheets = 0;
