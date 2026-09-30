@@ -11,7 +11,7 @@ public class MatchStatsGenerator {
         this.random = random;
     }
 
-    public void generateMatchStats(MatchStats stats) {
+    public void generateMatchStats(MatchStats stats, StoppageTime stoppage) {
         int homePossession = random.getRandomInt(35, 65);
         stats.setHomePossession(homePossession);
         stats.setAwayPossession(100 - homePossession);
@@ -38,13 +38,8 @@ public class MatchStatsGenerator {
         stats.setHomeGoalkeeperSaves(Math.max(0, stats.getAwayShootsOnTarget() - stats.getAwayGoals()));
         stats.setAwayGoalkeeperSaves(Math.max(0, stats.getHomeShootsOnTarget() - stats.getHomeGoals()));
 
-        int maxMinute = stats.getEvents().stream()
-                .mapToInt(MatchEvent::minute)
-                .max()
-                .orElse(90);
-
-        int stoppageTime = Math.max(0, maxMinute - 90);
-        stats.setStoppageTime(stoppageTime);
+        stats.setFirstHalfStoppage(stoppage.firstHalf());
+        stats.setSecondHalfStoppage(stoppage.secondHalf());
 
         stats.calculateCardsFromEvents();
     }

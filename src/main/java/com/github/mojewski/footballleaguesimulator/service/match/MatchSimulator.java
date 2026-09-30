@@ -9,12 +9,12 @@ import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGen
 import java.util.*;
 import java.util.function.BiFunction;
 
-public class MatchSimulation {
+public class MatchSimulator {
     private final MatchEventGenerator eventGenerator;
     private final MatchStatsGenerator statsGenerator;
     private final RandomNumberGenerator random;
 
-    public MatchSimulation(MatchEventGenerator eventGenerator, MatchStatsGenerator statsGenerator, RandomNumberGenerator random) {
+    public MatchSimulator(MatchEventGenerator eventGenerator, MatchStatsGenerator statsGenerator, RandomNumberGenerator random) {
         this.eventGenerator = eventGenerator;
         this.statsGenerator = statsGenerator;
         this.random = random;
@@ -23,69 +23,75 @@ public class MatchSimulation {
     public MatchStats simulateMatch(Match match) {
         MatchOutcome outcome = new MatchOutcome(match);
 
+        StoppageTime stoppage = new StoppageTime(
+                random.getRandomInt(0, 3),
+                random.getRandomInt(1, 10)
+        );
+
         List<MatchEvent> matchEvents = simulateMatchEvents(
                 outcome.getHomeGoals(),
                 outcome.getAwayGoals(),
                 match.getHomeTeam(),
-                match.getAwayTeam()
+                match.getAwayTeam(),
+                stoppage
         );
 
         MatchStats stats = new MatchStats(outcome, matchEvents);
-        statsGenerator.generateMatchStats(stats);
+        statsGenerator.generateMatchStats(stats, stoppage);
 
         return stats;
     }
 
-    public List<MatchEvent> simulateMatchEvents(int homeGoals, int awayGoals, Team homeTeam, Team awayTeam) {
+    public List<MatchEvent> simulateMatchEvents(int homeGoals, int awayGoals, Team homeTeam, Team awayTeam, StoppageTime stoppage) {
         List<MatchEvent> eventsSoFar = new ArrayList<>();
 
         for (int i = 0; i < homeGoals; i++) {
-            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.GOAL, true);
+            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.GOAL, true, stoppage);
         }
         for (int i = 0; i < awayGoals; i++) {
-            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.GOAL, false);
+            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.GOAL, false, stoppage);
         }
 
         int homeYellows = random.getRandomInt(0, 5);
         for (int i = 0; i < homeYellows; i++) {
-            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.YELLOW_CARD, true);
+            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.YELLOW_CARD, true, stoppage);
         }
         int awayYellows = random.getRandomInt(0, 5);
         for (int i = 0; i < awayYellows; i++) {
-            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.YELLOW_CARD, false);
+            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.YELLOW_CARD, false, stoppage);
         }
 
         if (random.getRandomInt(1, 100) <= 8) {
-            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.RED_CARD, true);
+            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.RED_CARD, true, stoppage);
         }
         if (random.getRandomInt(1, 100) <= 8) {
-            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.RED_CARD, false);
+            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.RED_CARD, false, stoppage);
         }
 
         int homeSubstitutions = random.getRandomInt(3, 5);
         for (int i = 0; i < homeSubstitutions; i++) {
-            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.SUBSTITUTION, true);
+            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.SUBSTITUTION, true, stoppage);
         }
 
         int awaySubstitutions = random.getRandomInt(3, 5);
         for (int i = 0; i < awaySubstitutions; i++) {
-            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.SUBSTITUTION, false);
+            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.SUBSTITUTION, false, stoppage);
         }
 
         return getSortedEvents(eventsSoFar);
     }
 
-    public void generateEventForTeam(Team team, List<Player> startingLineup, List<MatchEvent> eventsSoFar, EventType type, boolean isHomeTeam) {
+    public void generateEventForTeam(Team team, List<Player> startingLineup, List<MatchEvent> eventsSoFar, EventType type, boolean isHomeTeam, StoppageTime stoppage) {
         BiFunction<Integer, Team, List<Player>> activeProvider =
                 (minute, t) -> getActivePlayersForMinute(minute, t, startingLineup, eventsSoFar);
 
         List<Player> availableBench = getAvailableBenchForTeam(team, eventsSoFar);
 
         MatchEvent createdEvent = switch (type) {
-            case GOAL -> eventGenerator.generateGoalEvent(team, isHomeTeam, activeProvider);
-            case YELLOW_CARD, RED_CARD -> eventGenerator.generateCardEvent(team, type, isHomeTeam, activeProvider);
-            case INJURY -> eventGenerator.generateInjuryEvent(team, isHomeTeam, activeProvider);
-            case SUBSTITUTION -> eventGenerator.generateSubstitutionEvent(team, isHomeTeam, activeProvider, availableBench);
+            case GOAL -> eventGenerator.generateGoalEvent(team, isHomeTeam, activeProvider, stoppage);
+            case YELLOW_CARD, RED_CARD -> eventGenerator.generateCardEvent(team, type, isHomeTeam, activeProvider, stoppage);
+            case INJURY -> eventGenerator.generateInjuryEvent(team, isHomeTeam, activeProvider, stoppage);
+            case SUBSTITUTION -> eventGenerator.generateSubstitutionEvent(team, isHomeTeam, activeProvider, availableBench, stoppage);
         };
 
         if (createdEvent != null) {
