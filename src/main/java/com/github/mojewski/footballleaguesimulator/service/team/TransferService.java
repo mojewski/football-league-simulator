@@ -56,6 +56,7 @@ public class TransferService {
             }
 
             PlayerContract newContract = new PlayerContract(yearlySalary, randomDuration);
+            sellingTeam.removePlayer(player);
             player.signContract(newContract, team);
 
             freeAgents.removeFreeAgent(player);

@@ -10,8 +10,6 @@ public class CrisisState implements TeamMoraleState {
 
         if(result == MatchResult.WIN) {
             team.setTeamState(new NeutralState(1, 0));
-        } else if(result == MatchResult.DRAW) {
-            team.setTeamState(new NeutralState());
         }
     }
 
