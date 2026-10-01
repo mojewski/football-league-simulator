@@ -10,10 +10,12 @@ public class PlayerGenerator {
 
     private final NameGenerator nameGenerator;
     private final RandomNumberGenerator random;
+    private final SalaryCalculator salaryCalculator;
 
-    public PlayerGenerator(NameGenerator nameGenerator, RandomNumberGenerator random) {
+    public PlayerGenerator(NameGenerator nameGenerator, RandomNumberGenerator random, SalaryCalculator salaryCalculator) {
         this.nameGenerator = nameGenerator;
         this.random = random;
+        this.salaryCalculator = salaryCalculator;
     }
 
     public Player generateReplacement(Player retiringPlayer) {
@@ -81,14 +83,13 @@ public class PlayerGenerator {
         int duration = random.getRandomInt(1, 5);
         int overall = attributes.calculateOverall(position);
 
-        double baseSalary = Math.pow(overall, 3.6) * 0.7;
-        int potentialBonus = Math.max(0, attributes.getPotential() - overall) * 500;
-        double variation = random.getRandomDouble(0.90, 1.10);
+        double monthlySalary = salaryCalculator.calculateExpectedMonthlySalaryFromOverall(overall);
 
-        int finalSalary = (int) Math.round((baseSalary + potentialBonus) * variation);
-        finalSalary = Math.max(500, finalSalary);
+        int potentialBonus = Math.max(0, attributes.getPotential() - overall) * 50;
 
-        return new PlayerContract(finalSalary, duration);
+        double yearlySalary = (monthlySalary * 12) + potentialBonus;
+
+        return new PlayerContract(yearlySalary, duration);
     }
 
     private int boostSkill(int baseSkill, double multiplier) {

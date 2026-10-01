@@ -18,6 +18,7 @@ import org.mockito.quality.Strictness;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +29,8 @@ public class PlayerGeneratorTest {
     private NameGenerator nameGenerator;
     @Mock
     private RandomNumberGenerator random;
+    @Mock
+    private SalaryCalculator salaryCalculator;
 
     private PlayerGenerator playerGenerator;
     private Team team;
@@ -35,7 +38,7 @@ public class PlayerGeneratorTest {
 
     @BeforeEach
     void setUp() {
-        playerGenerator = new PlayerGenerator(nameGenerator, random);
+        playerGenerator = new PlayerGenerator(nameGenerator, random, salaryCalculator);
 
         team = new Team("FC Barcelona", 1000000000, 10, 99, Formation.F_3_5_2);
         retiringPlayer = new PlayerBuilder()
@@ -51,6 +54,7 @@ public class PlayerGeneratorTest {
 
         when(nameGenerator.generateFirstName(any())).thenReturn("Jan");
         when(nameGenerator.generateLastName(any())).thenReturn("Kowalski");
+        when(salaryCalculator.calculateExpectedMonthlySalaryFromOverall(anyInt())).thenReturn(500.0);
     }
 
     @Test
@@ -134,5 +138,21 @@ public class PlayerGeneratorTest {
         assertEquals(1, attributes.getShooting());
         assertEquals(1, attributes.getDefending());
         assertEquals(1, attributes.getDribbling());
+    }
+
+    @Test
+    void shouldCalculateSalaryUsingSalaryCalculator() {
+        when(random.getRandomInt(16, 20)).thenReturn(18);
+        when(random.getRandomInt(5, 60)).thenReturn(20);
+        when(random.getRandomInt(20, 99)).thenReturn(80);
+        when(random.getRandomInt(-10, 10)).thenReturn(0);
+        when(random.getRandomDouble(0.6, 0.76)).thenReturn(0.7);
+
+        when(salaryCalculator.calculateExpectedMonthlySalaryFromOverall(anyInt())).thenReturn(1000.0);
+
+        Player newPlayer = playerGenerator.generateReplacement(retiringPlayer);
+
+        assertNotNull(newPlayer.getContract());
+        assertTrue(newPlayer.getContract().getSalaryPerYear() >= 12000.0);
     }
 }

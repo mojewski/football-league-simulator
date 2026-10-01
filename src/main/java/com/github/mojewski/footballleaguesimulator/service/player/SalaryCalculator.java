@@ -13,8 +13,10 @@ public class SalaryCalculator {
     }
 
     public double calculateExpectedMonthlySalary(Player player) {
-        int overall = player.getOverall();
+        return calculateExpectedMonthlySalaryFromOverall(player.getOverall());
+    }
 
+    public double calculateExpectedMonthlySalaryFromOverall(int overall) {
         if (overall <= MIN_PROFESSIONAL_OVERALL) {
             return 0.0;
         }

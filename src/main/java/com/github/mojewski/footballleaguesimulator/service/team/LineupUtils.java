@@ -20,10 +20,30 @@ public class LineupUtils {
 
     public static List<Player> buildLineupForFormation(List<Player> pool, Formation formation, Comparator<Player> comparator) {
         List<Player> lineup = new ArrayList<>();
-        lineup.addAll(getBestForPosition(pool, Position.GOALKEEPER, formation.getGoalkeeper(), comparator));
-        lineup.addAll(getBestForPosition(pool, Position.DEFENDER, formation.getDefenders(), comparator));
-        lineup.addAll(getBestForPosition(pool, Position.MIDFIELDER, formation.getMidfielders(), comparator));
-        lineup.addAll(getBestForPosition(pool, Position.FORWARD, formation.getForwards(), comparator));
+        List<Player> availablePool = new ArrayList<>(pool);
+
+        fillPosition(lineup, availablePool, Position.GOALKEEPER, formation.getGoalkeeper(), comparator);
+        fillPosition(lineup, availablePool, Position.DEFENDER, formation.getDefenders(), comparator);
+        fillPosition(lineup, availablePool, Position.MIDFIELDER, formation.getMidfielders(), comparator);
+        fillPosition(lineup, availablePool, Position.FORWARD, formation.getForwards(), comparator);
+
+        int targetSize = formation.getGoalkeeper() + formation.getDefenders() + formation.getMidfielders() + formation.getForwards();
+
+        if (lineup.size() < targetSize && !availablePool.isEmpty()) {
+            List<Player> fallbackFill = availablePool.stream()
+                    .sorted(comparator)
+                    .limit(targetSize - lineup.size())
+                    .toList();
+
+            lineup.addAll(fallbackFill);
+        }
+
         return lineup;
+    }
+
+    private static void fillPosition(List<Player> lineup, List<Player> availablePool, Position position, int count, Comparator<Player> comparator) {
+        List<Player> selected = getBestForPosition(availablePool, position, count, comparator);
+        lineup.addAll(selected);
+        availablePool.removeAll(selected);
     }
 }
