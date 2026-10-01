@@ -57,7 +57,7 @@ public class TransferService {
 
             PlayerContract newContract = new PlayerContract(yearlySalary, randomDuration);
             sellingTeam.removePlayer(player);
-            player.signContract(newContract, team);
+            signContract(player, newContract, team);
 
             freeAgents.removeFreeAgent(player);
             return true;
@@ -142,5 +142,31 @@ public class TransferService {
         }
         double yearlySalary = salaryCalculator.calculateExpectedMonthlySalary(player) * 12;
         return yearlySalary * 3.0;
+    }
+
+    public void signContract(Player player, PlayerContract newContract, Team newTeam) {
+        Team oldTeam = player.getTeam();
+
+        if (oldTeam != null && oldTeam != newTeam) {
+            oldTeam.removePlayer(player);
+        }
+
+        player.assignContract(newContract);
+        player.setTeam(newTeam);
+
+        if (newTeam != null) {
+            newTeam.addPlayer(player);
+        }
+    }
+
+    public void terminateContract(Player player) {
+        Team currentTeam = player.getTeam();
+
+        player.clearContract();
+        player.setTeam(null);
+
+        if (currentTeam != null) {
+            currentTeam.removePlayer(player);
+        }
     }
 }

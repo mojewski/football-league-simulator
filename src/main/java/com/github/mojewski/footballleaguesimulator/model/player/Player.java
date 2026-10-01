@@ -85,23 +85,12 @@ public class Player {
         return contract != null && !contract.isExpired();
     }
 
-    public void signContract(PlayerContract newContract, Team newTeam) {
+    public void assignContract(PlayerContract newContract) {
         this.contract = newContract;
-        if (this.team != null && this.team != newTeam) {
-            this.team.removePlayer(this);
-        }
-        if (newTeam != null) {
-            newTeam.addPlayer(this);
-        }
     }
 
-    public void terminateContract() {
+    public void clearContract() {
         this.contract = null;
-        if (this.team != null) {
-            Team oldTeam = this.team;
-            this.team = null;
-            oldTeam.removePlayer(this);
-        }
     }
 
     public void setForSale(boolean forSale) {

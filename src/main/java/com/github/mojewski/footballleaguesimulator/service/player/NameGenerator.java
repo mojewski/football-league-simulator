@@ -2,6 +2,7 @@ package com.github.mojewski.footballleaguesimulator.service.player;
 
 import com.github.mojewski.footballleaguesimulator.data.NameRepository;
 import com.github.mojewski.footballleaguesimulator.model.Country;
+import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,9 +11,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class NameGenerator {
 
     private final NameRepository nameRepository;
+    private final RandomNumberGenerator random;
 
-    public NameGenerator(NameRepository nameRepository) {
+    public NameGenerator(NameRepository nameRepository, RandomNumberGenerator random) {
         this.nameRepository = Objects.requireNonNull(nameRepository, "NameRepository cannot be null");
+        this.random = random;
     }
 
     public String generateFirstName(Country country) {
@@ -28,7 +31,7 @@ public class NameGenerator {
     public String getRandomElement(List<String> list) {
         if(list == null || list.isEmpty()) { return "Unknown"; }
 
-        int index = ThreadLocalRandom.current().nextInt(list.size());
+        int index = random.getRandomInt(0, list.size() - 1);
         return list.get(index);
     }
 }
