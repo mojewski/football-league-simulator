@@ -7,7 +7,6 @@ import com.github.mojewski.footballleaguesimulator.service.match.event.MatchEven
 import com.github.mojewski.footballleaguesimulator.service.utils.RandomNumberGenerator;
 
 import java.util.*;
-import java.util.function.BiFunction;
 
 public class MatchSimulator {
     private final MatchEventGenerator eventGenerator;
@@ -44,54 +43,84 @@ public class MatchSimulator {
 
     public List<MatchEvent> simulateMatchEvents(int homeGoals, int awayGoals, Team homeTeam, Team awayTeam, StoppageTime stoppage) {
         List<MatchEvent> eventsSoFar = new ArrayList<>();
+        List<PendingEvent> pendingEvents = new ArrayList<>();
 
         for (int i = 0; i < homeGoals; i++) {
-            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.GOAL, true, stoppage);
+            pendingEvents.add(new PendingEvent(eventGenerator.generateEventMinute(stoppage), EventType.GOAL, homeTeam, true));
         }
         for (int i = 0; i < awayGoals; i++) {
-            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.GOAL, false, stoppage);
+            pendingEvents.add(new PendingEvent(eventGenerator.generateEventMinute(stoppage), EventType.GOAL, awayTeam, false));
         }
 
         int homeYellows = random.getRandomInt(0, 5);
         for (int i = 0; i < homeYellows; i++) {
-            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.YELLOW_CARD, true, stoppage);
+            pendingEvents.add(new PendingEvent(eventGenerator.generateEventMinute(stoppage), EventType.YELLOW_CARD, homeTeam, true));
         }
         int awayYellows = random.getRandomInt(0, 5);
         for (int i = 0; i < awayYellows; i++) {
-            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.YELLOW_CARD, false, stoppage);
+            pendingEvents.add(new PendingEvent(eventGenerator.generateEventMinute(stoppage), EventType.YELLOW_CARD, awayTeam, false));
         }
 
         if (random.getRandomInt(1, 100) <= 8) {
-            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.RED_CARD, true, stoppage);
+            pendingEvents.add(new PendingEvent(eventGenerator.generateEventMinute(stoppage), EventType.RED_CARD, homeTeam, true));
         }
         if (random.getRandomInt(1, 100) <= 8) {
-            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.RED_CARD, false, stoppage);
+            pendingEvents.add(new PendingEvent(eventGenerator.generateEventMinute(stoppage), EventType.RED_CARD, awayTeam, false));
         }
 
-        int homeSubstitutions = random.getRandomInt(3, 5);
-        for (int i = 0; i < homeSubstitutions; i++) {
-            generateEventForTeam(homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.SUBSTITUTION, true, stoppage);
+        if (random.getRandomInt(1, 100) <= 5) {
+            pendingEvents.add(new PendingEvent(eventGenerator.generateEventMinute(stoppage), EventType.INJURY, homeTeam, true));
+        }
+        if (random.getRandomInt(1, 100) <= 5) {
+            pendingEvents.add(new PendingEvent(eventGenerator.generateEventMinute(stoppage), EventType.INJURY, awayTeam, false));
         }
 
-        int awaySubstitutions = random.getRandomInt(3, 5);
-        for (int i = 0; i < awaySubstitutions; i++) {
-            generateEventForTeam(awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar, EventType.SUBSTITUTION, false, stoppage);
+        int maxHomeSubs = Math.min(random.getRandomInt(3, 5), homeTeam.getActiveLineup().getBench().size());
+        for (int i = 0; i < maxHomeSubs; i++) {
+            int subMinute = random.getRandomInt(45, 90 + stoppage.secondHalf());
+            pendingEvents.add(new PendingEvent(subMinute, EventType.SUBSTITUTION, homeTeam, true));
         }
 
-        return getSortedEvents(eventsSoFar);
+        int maxAwaySubs = Math.min(random.getRandomInt(3, 5), awayTeam.getActiveLineup().getBench().size());
+        for (int i = 0; i < maxAwaySubs; i++) {
+            int subMinute = random.getRandomInt(45, 90 + stoppage.secondHalf());
+            pendingEvents.add(new PendingEvent(subMinute, EventType.SUBSTITUTION, awayTeam, false));
+        }
+
+        pendingEvents.sort(Comparator.comparingInt(PendingEvent::minute));
+
+        for (PendingEvent pending : pendingEvents) {
+            generateEventForTeam(
+                    pending.team(),
+                    pending.minute(),
+                    eventsSoFar,
+                    pending.type(),
+                    pending.isHome(),
+                    stoppage
+            );
+
+            if (pending.type() == EventType.INJURY) {
+                handleInjurySubstitution(pending.team(), pending.minute(), eventsSoFar, pending.isHome());
+            }
+        }
+
+        return eventsSoFar;
     }
 
-    public void generateEventForTeam(Team team, List<Player> startingLineup, List<MatchEvent> eventsSoFar, EventType type, boolean isHomeTeam, StoppageTime stoppage) {
-        BiFunction<Integer, Team, List<Player>> activeProvider =
-                (minute, t) -> getActivePlayersForMinute(minute, t, startingLineup, eventsSoFar);
+    private record PendingEvent(int minute, EventType type, Team team, boolean isHome) {}
+
+    public void generateEventForTeam(Team team, int minute, List<MatchEvent> eventsSoFar, EventType type, boolean isHomeTeam, StoppageTime stoppage) {
+        List<Player> startingLineup = team.getActiveLineup().getStartingEleven();
+
+        List<Player> activePlayers = getActivePlayersForMinute(minute, team, startingLineup, eventsSoFar);
 
         List<Player> availableBench = getAvailableBenchForTeam(team, eventsSoFar);
 
         MatchEvent createdEvent = switch (type) {
-            case GOAL -> eventGenerator.generateGoalEvent(team, isHomeTeam, activeProvider, stoppage);
-            case YELLOW_CARD, RED_CARD -> eventGenerator.generateCardEvent(team, type, isHomeTeam, activeProvider, stoppage);
-            case INJURY -> eventGenerator.generateInjuryEvent(team, isHomeTeam, activeProvider, stoppage);
-            case SUBSTITUTION -> eventGenerator.generateSubstitutionEvent(team, isHomeTeam, activeProvider, availableBench, stoppage);
+            case GOAL -> eventGenerator.generateGoalEvent(team, minute, isHomeTeam, activePlayers);
+            case YELLOW_CARD, RED_CARD -> eventGenerator.generateCardEvent(team, minute, type, isHomeTeam, activePlayers);
+            case INJURY -> eventGenerator.generateInjuryEvent(team, minute, isHomeTeam, activePlayers);
+            case SUBSTITUTION -> eventGenerator.generateSubstitutionEvent(team, minute, isHomeTeam, activePlayers, availableBench);
         };
 
         if (createdEvent != null) {
@@ -136,6 +165,28 @@ public class MatchSimulator {
         return fullBench.stream()
                 .filter(p -> !usedPlayers.contains(p))
                 .toList();
+    }
+
+    private void handleInjurySubstitution(Team team, int minute, List<MatchEvent> eventsSoFar, boolean isHomeTeam) {
+        List<Player> availableBench = getAvailableBenchForTeam(team, eventsSoFar);
+
+        if (availableBench.isEmpty()) {
+            return;
+        }
+
+        List<Player> activePlayers = getActivePlayersForMinute(minute, team, team.getActiveLineup().getStartingEleven(), eventsSoFar);
+
+        MatchEvent subEvent = eventGenerator.generateSubstitutionEvent(
+                team,
+                minute,
+                isHomeTeam,
+                activePlayers,
+                availableBench
+        );
+
+        if (subEvent != null) {
+            eventsSoFar.add(subEvent);
+        }
     }
 
     public List<MatchEvent> getSortedEvents(List<MatchEvent> events) {
