@@ -30,11 +30,7 @@ public class MatchEventGenerator {
         }
     }
 
-    public MatchEvent generateGoalEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider, StoppageTime stoppage) {
-        int minute = generateEventMinute(stoppage);
-
-        List<Player> activePlayers = activePlayersProvider.apply(minute, team);
-
+    public MatchEvent generateGoalEvent(Team team, int minute, boolean isHomeTeam, List<Player> activePlayers) {
         Player scorer = selectPlayerForGoal(activePlayers);
         Player assistPlayer = selectAssistPlayer(activePlayers, scorer);
 
@@ -82,10 +78,7 @@ public class MatchEventGenerator {
         return positionFactor * overallFactor;
     }
 
-    public MatchEvent generateCardEvent(Team team, EventType cardType, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider, StoppageTime stoppage) {
-        int minute = generateEventMinute(stoppage);
-        List<Player> activePlayers = activePlayersProvider.apply(minute, team);
-
+    public MatchEvent generateCardEvent(Team team, int minute, EventType cardType, boolean isHomeTeam, List<Player> activePlayers) {
         Player penalizedPlayer = WeightedRandomSelector.selectWeighted(
                 activePlayers,
                 player -> calculateCardWeight(player, cardType),
@@ -109,10 +102,7 @@ public class MatchEventGenerator {
         return positionFactor;
     }
 
-    public MatchEvent generateInjuryEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider, StoppageTime stoppage) {
-        int minute = generateEventMinute(stoppage);
-        List<Player> activePlayers = activePlayersProvider.apply(minute, team);
-
+    public MatchEvent generateInjuryEvent(Team team, int minute, boolean isHomeTeam, List<Player> activePlayers) {
         Player injuredPlayer = WeightedRandomSelector.selectWeighted(
                 activePlayers,
                 this::calculateInjuryWeight,
@@ -136,14 +126,10 @@ public class MatchEventGenerator {
         return positionFactor * ageFactor;
     }
 
-    public MatchEvent generateSubstitutionEvent(Team team, boolean isHomeTeam, BiFunction<Integer, Team, List<Player>> activePlayersProvider, List<Player> bench, StoppageTime stoppage) {
+    public MatchEvent generateSubstitutionEvent(Team team, int minute, boolean isHomeTeam, List<Player> activePlayers, List<Player> bench) {
         if (bench.isEmpty()) {
             return null;
         }
-
-        int minute = random.getRandomInt(45, 90 + stoppage.secondHalf());
-
-        List<Player> activePlayers = activePlayersProvider.apply(minute, team);
 
         List<Player> outfieldPlayers = activePlayers.stream()
                 .filter(player -> player.getPosition() != Position.GOALKEEPER)
