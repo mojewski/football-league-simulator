@@ -84,16 +84,13 @@ public class PlayerTest {
     }
 
     @Test
-    void shouldSignContractAndAssignTeamCorrectly() {
-        Team firstTeam = new Team("Bayern Munchen", 1_000_000_000, 85, 87, Formation.F_3_4_3);
+    void shouldSignContractCorrectly() {
         Player player = createBasePlayerBuilder()
-                .setTeam(firstTeam)
                 .build();
         PlayerContract contract = new PlayerContract(999_999, 5);
 
-        player.signContract(contract, testTeam);
+        player.signContract(contract);
 
-        assertEquals(testTeam, player.getTeam());
         assertEquals(contract, player.getContract());
         assertTrue(player.hasActiveContract());
     }
@@ -102,7 +99,7 @@ public class PlayerTest {
     void shouldTerminateContract() {
         Player player = createBasePlayerBuilder().build();
         PlayerContract contract = new PlayerContract(999_999, 5);
-        player.signContract(contract, testTeam);
+        player.signContract(contract);
 
         player.terminateContract();
 

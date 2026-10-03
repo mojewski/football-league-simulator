@@ -151,7 +151,7 @@ public class TransferService {
             oldTeam.removePlayer(player);
         }
 
-        player.assignContract(newContract);
+        player.signContract(newContract);
         player.setTeam(newTeam);
 
         if (newTeam != null) {
@@ -162,7 +162,7 @@ public class TransferService {
     public void terminateContract(Player player) {
         Team currentTeam = player.getTeam();
 
-        player.clearContract();
+        player.terminateContract();
         player.setTeam(null);
 
         if (currentTeam != null) {
