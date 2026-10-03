@@ -1,3 +1,9 @@
 plany:
-- testy jednostkowe dla folderu match
+- sprawdzic jeszcze matcheventgenerator
+- testy jednostkowe w service
 - review transfer service
+- klasa league engine - wywolujaca mecze kolejki itd
+- napisac obsluge statystyk player i team
+- zarzadzanie stamina (chyba ze jest nie pamietam)
+- symulator kalendarza
+- simulation engine - wszystko w calosc juz chyba

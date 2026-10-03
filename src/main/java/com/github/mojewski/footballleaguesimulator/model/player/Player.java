@@ -85,11 +85,11 @@ public class Player {
         return contract != null && !contract.isExpired();
     }
 
-    public void assignContract(PlayerContract newContract) {
+    public void signContract(PlayerContract newContract) {
         this.contract = newContract;
     }
 
-    public void clearContract() {
+    public void terminateContract() {
         this.contract = null;
     }
 
