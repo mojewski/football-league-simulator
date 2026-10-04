@@ -19,6 +19,8 @@ public class MatchOutcome {
     private int homeGoals;
     private int awayGoals;
 
+    private boolean isWalkover;
+
    public MatchOutcome(Match match) {
        this.homeTeam = match.getHomeTeam();
        this.awayTeam = match.getAwayTeam();
@@ -51,6 +53,18 @@ public class MatchOutcome {
         this.awayGoals = PoissonCalculator.generateGoals(this.awayXG);
     }
 
+    public void setHomeGoals(int homeGoals) {
+        this.homeGoals = homeGoals;
+    }
+
+    public void setAwayGoals(int awayGoals) {
+        this.awayGoals = awayGoals;
+    }
+
+    public void setWalkover(boolean walkover) {
+        this.isWalkover = walkover;
+    }
+
     public boolean isHomeWin() { return homeGoals > awayGoals; }
     public boolean isDraw() { return homeGoals == awayGoals; }
     public boolean isAwayWin() { return awayGoals > homeGoals; }
@@ -81,5 +95,8 @@ public class MatchOutcome {
     }
     public int getAwayGoals() {
         return awayGoals;
+    }
+    public boolean isWalkover() {
+        return isWalkover;
     }
 }
