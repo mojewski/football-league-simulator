@@ -35,6 +35,11 @@ public class MatchSimulator {
                 stoppage
         );
 
+        WalkoverResult walkoverStatus = extractWalkoverResult(matchEvents);
+        if (walkoverStatus != WalkoverResult.NONE) {
+            applyWalkoverOutcome(outcome, walkoverStatus);
+        }
+
         MatchStats stats = new MatchStats(outcome, matchEvents);
         statsGenerator.generateMatchStats(stats, stoppage);
 
@@ -102,18 +107,23 @@ public class MatchSimulator {
             if (pending.type() == EventType.INJURY) {
                 handleInjurySubstitution(pending.team(), pending.minute(), eventsSoFar, pending.isHome());
             }
+
+            WalkoverResult walkover = checkWalkover(pending.minute(), homeTeam, awayTeam, eventsSoFar);
+            if (walkover != WalkoverResult.NONE) {
+                EventType walkoverType = (walkover == WalkoverResult.HOME_WIN) ? EventType.HOME_WALKOVER : EventType.AWAY_WALKOVER;
+                Team winningTeam = (walkover == WalkoverResult.HOME_WIN) ? homeTeam : awayTeam;
+
+                eventsSoFar.add(new MatchEvent(pending.minute(), walkoverType, winningTeam, null, null, walkover == WalkoverResult.HOME_WIN));
+                break;
+            }
         }
 
-        return eventsSoFar;
+        return getSortedEvents(eventsSoFar);
     }
-
-    private record PendingEvent(int minute, EventType type, Team team, boolean isHome) {}
 
     public void generateEventForTeam(Team team, int minute, List<MatchEvent> eventsSoFar, EventType type, boolean isHomeTeam, StoppageTime stoppage) {
         List<Player> startingLineup = team.getActiveLineup().getStartingEleven();
-
         List<Player> activePlayers = getActivePlayersForMinute(minute, team, startingLineup, eventsSoFar);
-
         List<Player> availableBench = getAvailableBenchForTeam(team, eventsSoFar);
 
         MatchEvent createdEvent = switch (type) {
@@ -121,6 +131,7 @@ public class MatchSimulator {
             case YELLOW_CARD, RED_CARD -> eventGenerator.generateCardEvent(team, minute, type, isHomeTeam, activePlayers);
             case INJURY -> eventGenerator.generateInjuryEvent(team, minute, isHomeTeam, activePlayers);
             case SUBSTITUTION -> eventGenerator.generateSubstitutionEvent(team, minute, isHomeTeam, activePlayers, availableBench);
+            default -> null;
         };
 
         if (createdEvent != null) {
@@ -189,10 +200,49 @@ public class MatchSimulator {
         }
     }
 
+    public WalkoverResult checkWalkover(int minute, Team homeTeam, Team awayTeam, List<MatchEvent> eventsSoFar) {
+        int homeActive = getActivePlayersForMinute(minute, homeTeam, homeTeam.getActiveLineup().getStartingEleven(), eventsSoFar).size();
+        int awayActive = getActivePlayersForMinute(minute, awayTeam, awayTeam.getActiveLineup().getStartingEleven(), eventsSoFar).size();
+
+        if (awayActive < 7) {
+            return WalkoverResult.HOME_WIN;
+        }
+        if (homeActive < 7) {
+            return WalkoverResult.AWAY_WIN;
+        }
+        return WalkoverResult.NONE;
+    }
+
+    private WalkoverResult extractWalkoverResult(List<MatchEvent> events) {
+        for (MatchEvent event : events) {
+            if (event.type() == EventType.HOME_WALKOVER) return WalkoverResult.HOME_WIN;
+            if (event.type() == EventType.AWAY_WALKOVER) return WalkoverResult.AWAY_WIN;
+        }
+        return WalkoverResult.NONE;
+    }
+
+    private void applyWalkoverOutcome(MatchOutcome outcome, WalkoverResult walkover) {
+        if (walkover == WalkoverResult.HOME_WIN) {
+            outcome.setHomeGoals(Math.max(3, outcome.getHomeGoals()));
+            outcome.setAwayGoals(0);
+        } else if (walkover == WalkoverResult.AWAY_WIN) {
+            outcome.setHomeGoals(0);
+            outcome.setAwayGoals(Math.max(3, outcome.getAwayGoals()));
+        }
+
+        outcome.setWalkover(true);
+    }
+
     public List<MatchEvent> getSortedEvents(List<MatchEvent> events) {
         return events.stream()
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparingInt(MatchEvent::minute))
                 .toList();
     }
+
+    public enum WalkoverResult {
+        NONE, HOME_WIN, AWAY_WIN
+    }
+
+    private record PendingEvent(int minute, EventType type, Team team, boolean isHome) {}
 }
