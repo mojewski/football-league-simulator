@@ -115,8 +115,13 @@ public class TransferService {
         }
 
         return players.stream()
-                .filter(player -> Math.abs(player.getOverall() - buyingTeam.getReputation()) <= 5)
                 .filter(player -> player.getPosition() == position)
+                .filter(player -> {
+                    boolean isReadyNow = Math.abs(player.getOverall() - buyingTeam.getReputation()) <= 5;
+                    boolean isProspect = player.getAge() <= 21 && (player.getAttributes().getPotential() - buyingTeam.getReputation()) >= 0;
+
+                    return isReadyNow || isProspect;
+                })
                 .filter(player -> {
                     double yearlySalary = salaryCalculator.calculateExpectedMonthlySalary(player) * 12;
                     double transferFee = calculateTransferFee(player);
