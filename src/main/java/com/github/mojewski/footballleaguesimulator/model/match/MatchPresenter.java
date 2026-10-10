@@ -54,8 +54,7 @@ public class MatchPresenter {
         return switch (event.type()) {
             case GOAL -> String.format("[%2d'] GOL (%s) - %s%s",
                     event.minute(), teamName, primaryPlayer,
-                    !secondaryPlayer.isBlank() ? " (Asysta: " + secondaryPlayer + ")" : "");
-
+                    (secondaryPlayer != null && !secondaryPlayer.isBlank()) ? " (Asysta: " + secondaryPlayer + ")" : "");
             case YELLOW_CARD -> String.format("[%2d'] Żółta kartka (%s) - %s",
                     event.minute(), teamName, primaryPlayer);
 
@@ -67,6 +66,8 @@ public class MatchPresenter {
 
             case INJURY -> String.format("[%2d'] Kontuzja (%s) - %s",
                     event.minute(), teamName, primaryPlayer);
+
+            default -> String.format("[%2d'] Inne zdarzenie (%s)", event.minute(), teamName);
         };
     }
 
