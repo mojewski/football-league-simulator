@@ -1,6 +1,6 @@
 package com.github.mojewski.footballleaguesimulator.service.team;
 
-import com.github.mojewski.footballleaguesimulator.TODO.Calendar;
+import com.github.mojewski.footballleaguesimulator.service.utils.Calendar;
 import com.github.mojewski.footballleaguesimulator.TODO.Simulation;
 import com.github.mojewski.footballleaguesimulator.model.player.*;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
@@ -52,13 +52,13 @@ public class TransferServiceTest {
 
     @Test
     void shouldNotTransferWhenWindowInactiveOrSquadFull() {
-        calendar.isTransferWindowActive = false;
+        calendar.setTransferWindowActive(false);
         when(buyingTeam.getPlayerList()).thenReturn(List.of());
 
         boolean canTransferClosedWindow = transferService.isClubAbleToTransfer(calendar, buyingTeam);
         assertThat(canTransferClosedWindow).isFalse();
 
-        calendar.isTransferWindowActive = true;
+        calendar.setTransferWindowActive(true);
         List<Player> fullSquad = java.util.stream.Stream.generate(() -> mock(Player.class))
                 .limit(25)
                 .toList();
@@ -70,7 +70,7 @@ public class TransferServiceTest {
 
     @Test
     void shouldUpdateBudgetsAndSignContractOnSuccessfulTransfer() {
-        calendar.isTransferWindowActive = true;
+        calendar.setTransferWindowActive(true);
         when(buyingTeam.getPlayerList()).thenReturn(List.of());
 
         lenient().when(random.getRandomInt(anyInt(), anyInt())).thenReturn(0);

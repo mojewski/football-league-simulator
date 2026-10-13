@@ -1,6 +1,7 @@
 plany:
 - klasa league engine - wywolujaca mecze kolejki itd
+- symulator kalendarza
 - napisac obsluge statystyk player i team
 - zarzadzanie stamina (chyba ze jest nie pamietam)
-- symulator kalendarza
 - simulation engine - wszystko w calosc juz chyba
+-randomevents typu bogaty inwestor itd, dodac tez trzeba reputacje dynamiczna - za awans druzynie rosnie itd
