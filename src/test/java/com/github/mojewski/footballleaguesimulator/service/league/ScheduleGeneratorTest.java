@@ -4,6 +4,7 @@ import com.github.mojewski.footballleaguesimulator.model.league.League;
 import com.github.mojewski.footballleaguesimulator.model.league.schedule.Matchday;
 import com.github.mojewski.footballleaguesimulator.model.match.Match;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
+import com.github.mojewski.footballleaguesimulator.service.utils.Calendar;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ public class ScheduleGeneratorTest {
         for (int i = 0; i < 18; i++) {
             league.addTeam(new Team("FC Test " + i));
         }
-        generator = new ScheduleGenerator();
+        generator = new ScheduleGenerator(new Calendar());
     }
 
     @Test
@@ -51,7 +52,7 @@ public class ScheduleGeneratorTest {
         for (int i = 0; i < 17; i++) {
             oddLeague.addTeam(new Team("FC Test " + i));
         }
-        ScheduleGenerator oddGenerator = new ScheduleGenerator();
+        ScheduleGenerator oddGenerator = new ScheduleGenerator(new Calendar());
 
         List<Matchday> schedule = oddGenerator.generateFullSchedule(oddLeague);
 

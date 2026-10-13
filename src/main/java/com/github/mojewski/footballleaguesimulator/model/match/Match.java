@@ -2,7 +2,9 @@ package com.github.mojewski.footballleaguesimulator.model.match;
 
 import com.github.mojewski.footballleaguesimulator.model.player.Player;
 import com.github.mojewski.footballleaguesimulator.model.team.Team;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Match {
@@ -17,6 +19,7 @@ public class Match {
     private final List<Player> awayBench;
 
     private MatchStats stats;
+    private LocalDate matchDate;
 
     public Match(Team homeTeam, Team awayTeam) {
         this.homeTeam = homeTeam;
@@ -26,6 +29,10 @@ public class Match {
         this.homeBench = homeTeam.getActiveLineup().getBench();
         this.awayStartingEleven = awayTeam.getActiveLineup().getStartingEleven();
         this.awayBench = awayTeam.getActiveLineup().getBench();
+    }
+
+    public void setMatchDate(LocalDate date) {
+        this.matchDate = date;
     }
 
     public void setPlayed() {
@@ -63,5 +70,8 @@ public class Match {
     }
     public MatchStats getMatchStats() {
         return stats;
+    }
+    public LocalDate getMatchDate() {
+        return matchDate;
     }
 }

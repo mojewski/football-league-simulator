@@ -1,6 +1,6 @@
 package com.github.mojewski.footballleaguesimulator.service.team;
 
-import com.github.mojewski.footballleaguesimulator.TODO.Calendar;
+import com.github.mojewski.footballleaguesimulator.service.utils.Calendar;
 import com.github.mojewski.footballleaguesimulator.TODO.Simulation;
 import com.github.mojewski.footballleaguesimulator.model.league.League;
 import com.github.mojewski.footballleaguesimulator.model.player.FreeAgents;
@@ -31,7 +31,7 @@ public class TransferService {
     }
 
     public boolean isClubAbleToTransfer(Calendar calendar, Team team) {
-        return calendar.isTransferWindowActive && team.getPlayerList().size() < TARGET_SQUAD_SIZE;
+        return calendar.isTransferWindowActive() && team.getPlayerList().size() < TARGET_SQUAD_SIZE;
     }
 
     public boolean doTransfer(Team team, Calendar calendar, Position position) {
